@@ -26,6 +26,6 @@ Vinko Bohnec | vbohnec21@foi.hr | 0016152943 | VinkoBohnec
 PDF dokument sa zadatkom je dostupan u [repositoriju](https://github.com/foivz/pi2023-zadace-VinkoBohnec/blob/19b37c50a3321673abb86b0c5bf982de17d0a27d/Zadatak%20-%20Kadrovska.pdf).
 
 ## Resursi
-(Zadaće je obvezno predati u obliku Wiki stranica na ovom repozitoriju. Slike i druge artefakte koje ćete koristiti na wiki stranicama smjestite u mapu dokumentacije u repozitoriju!)
+Dokumentacija ovog zadatka se nalazi na [wiki stranici](https://github.com/foivz/pi2023-zadace-VinkoBohnec/wiki) repozitorija.
 
-Svi resursi nalaze se u mapi _Documentation_.
+Svi resursi korišteni u wiki stranici nalaze se u mapi _Documentation_.
