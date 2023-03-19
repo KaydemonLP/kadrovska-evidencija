@@ -20,7 +20,14 @@ Vinko Bohnec | vbohnec21@foi.hr | 0016152943 | VinkoBohnec
 (Vlastitim riječima opišite domenu ili problem koji pokriva projekt vaše zadaće!)
 
 ## Specifikacija projekta
-(Vlastitim riječima opišite zahtjeve za izradu ovog programskog proizvoda!)
+Budući korisnici softverskog rješenja Upravitelj Kadrovskih Zahtjeva očekuju od softvera sljedeće mogućnosti:
+* Slanje zahtjeva za odsustvo kroz formu.
+* Slanje obavijesti za odsustvo radi zdravstvenih razloga.
+* Pregled statusa svojih Zahtjeva.
+* Obavijesti promjene statusa putem E-Mail-a.
+* Pregled, odobravanje i odbijanje svih kreiranih zahtjeva sa strane menađera.
+* Evidencija svih odsustva radi praćenja sa strane ljudskih resursa.
+* Ograničavanje pristupa dijelovima sustava ovisno o ulozi korisnika.
 
 ## Zadatak
 PDF dokument sa zadatkom je dostupan u [repositoriju](https://github.com/foivz/pi2023-zadace-VinkoBohnec/blob/19b37c50a3321673abb86b0c5bf982de17d0a27d/Zadatak%20-%20Kadrovska.pdf).
