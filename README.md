@@ -8,7 +8,7 @@ Vinko Bohnec | vbohnec21@foi.hr | 0016152943 | VinkoBohnec
 
 
 ## Opis domene
-(Vlastitim riječima opišite domenu ili problem koji pokriva projekt vaše zadaće!)
+Kod velikih poduzeča javlja se problem zahtjevanja, evidentiranja i praćenja odsustva kada se ćine ručno. U ovom projektu opisana je specifikacija softverskih zahtjeva za softversko rješenje Upravitelj Kadrovskih Zahtjeva za koji se smatra da će olakšati funkcije zahtjevanja odsustva od strane djelatnika, obrađivanja zahtjeva i evidentiranje odsustva od strane menađera, i praćenje istih od strane ljudskih resursi.
 
 ## Specifikacija projekta
 Budući korisnici softverskog rješenja Upravitelj Kadrovskih Zahtjeva očekuju od softvera sljedeće mogućnosti:
