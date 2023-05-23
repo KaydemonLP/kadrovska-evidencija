@@ -1,8 +1,13 @@
 ﻿using Evaluation_Manager.repositories;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +18,8 @@ namespace Evaluation_Manager
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
+
         [STAThread]
         static void Main()
         {
@@ -27,6 +34,8 @@ namespace Evaluation_Manager
             // SQL server authentification
             // username/pass na mail
             // Baza evaluation manager
+            // ClientID: 
+            // Secret: 
         }
     }
 }
