@@ -21,7 +21,7 @@ namespace Kadrovska
         private void FrmHomePage_Load(object sender, EventArgs e)
         {
             string strName = LocalAuthentificationHandler.GetUserInfo().GivenName;
-            m_lblWelcome.Text = $"Welcome {strName}";
+            m_lblWelcome.Text += $"{strName}";
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

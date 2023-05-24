@@ -34,19 +34,6 @@ namespace Evaluation_Manager {
 
             CEvaluation evaluation = EvaluationRepository.GetEvaluation(m_Student, currentActivity);
 
-            if( evaluation != null )
-            {
-                txtTeacher.Text = evaluation.m_Evaluator.m_strFirstName + " " + evaluation.m_Evaluator.m_strLastName;
-                txtEvaluationDate.Text = evaluation.m_dateEvaluationDate.ToLongDateString();
-                numPoints.Value = evaluation.m_iPoints;
-            }
-            else
-            {
-                txtTeacher.Text = FrmLogin.m_LoggedTeacher.m_strFirstName + " " + FrmLogin.m_LoggedTeacher.m_strLastName;
-                txtEvaluationDate.Text = "-";
-                numPoints.Value = 0;
-            }
-
             
         }
 
@@ -66,7 +53,7 @@ namespace Evaluation_Manager {
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
-            FrmLogin.m_LoggedTeacher.PerformEvaluation(m_Student, GetCurrentActivity(), (int)(numPoints.Value));
+           
             Close();
         }
     }

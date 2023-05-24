@@ -9,8 +9,8 @@ namespace Kadrovska.models
     public class CKorisnik
     {
         public int m_iID;
-        public string m_szIme;
-        public string m_szPrezime;
+        public string m_strIme;
+        public string m_strPrezime;
         public DateTime m_datRodendan;
         public string m_strGoogleAuthCode;
     }

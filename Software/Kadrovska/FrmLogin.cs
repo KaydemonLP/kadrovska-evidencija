@@ -1,15 +1,9 @@
-﻿using Evaluation_Manager.models;
-using Google.Apis.Auth;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Util.Store;
+﻿using System;
+using Evaluation_Manager.models;
 using Kadrovska;
 using Kadrovska.Auth;
-using System;
-using System.Security.AccessControl;
-using System.Threading;
 using System.Windows.Forms;
+using Evaluation_Manager.repositories;
 
 namespace Evaluation_Manager
 {
@@ -22,18 +16,22 @@ namespace Evaluation_Manager
             InitializeComponent();
         }
 
-        public static CTeacher m_LoggedTeacher {
-            get; set;
-        }
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             LocalAuthentificationHandler.StartGoogleAuthentificationProcess();
         }
 
+        private void InsertUserIfNotExistYet()
+        {
+            if (KorisnikRepository.GetUser(LocalAuthentificationHandler.GetUserInfo().Subject) == null)
+                KorisnikRepository.InsertUser(LocalAuthentificationHandler.GetLocalCredential(), LocalAuthentificationHandler.GetUserInfo());
+        }
+
         public void OnCredentialsLoaded()
         {
             FrmHomePage frmHomePage = new FrmHomePage();
+            InsertUserIfNotExistYet();
+
             Hide();
             frmHomePage.ShowDialog();
             Close();

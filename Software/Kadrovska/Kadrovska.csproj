@@ -27,7 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs12BA.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vsA9C6.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,7 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs12BA.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vsA9C6.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CefSharp, Version=113.1.40.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
@@ -68,7 +68,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -114,6 +116,11 @@
     <Compile Include="FrmStudents.Designer.cs">
       <DependentUpon>FrmStudents.cs</DependentUpon>
     </Compile>
+    <Compile Include="IPS23_vbohnec21DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IPS23_vbohnec21DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="models\Aktivnost.cs" />
     <Compile Include="auth\LocalAuthentificationHandler.cs" />
     <Compile Include="models\Evaluation.cs" />
@@ -125,6 +132,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="repositories\EvaluationRepository.cs" />
+    <Compile Include="repositories\KorisnikRepository.cs" />
     <Compile Include="repositories\TeacherRepository.cs" />
     <Compile Include="repositories\ActivityRepository.cs" />
     <Compile Include="repositories\StudentRepository.cs" />
@@ -152,6 +160,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="IPS23_vbohnec21DataSet.xsc">
+      <DependentUpon>IPS23_vbohnec21DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="IPS23_vbohnec21DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>IPS23_vbohnec21DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="IPS23_vbohnec21DataSet.xss">
+      <DependentUpon>IPS23_vbohnec21DataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
