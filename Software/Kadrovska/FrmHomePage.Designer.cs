@@ -35,7 +35,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.m_pnlBody = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.m_lblWelcome = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.m_pnlMain.SuspendLayout();
             this.m_pnlNav.SuspendLayout();
@@ -68,7 +68,7 @@
             this.m_pnlNav.Location = new System.Drawing.Point(3, 3);
             this.m_pnlNav.Name = "m_pnlNav";
             this.m_pnlNav.Size = new System.Drawing.Size(117, 208);
-            this.m_pnlNav.TabIndex = 2;
+            this.m_pnlNav.TabIndex = 1;
             // 
             // button1
             // 
@@ -110,7 +110,7 @@
             // m_pnlBody
             // 
             this.m_pnlBody.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.m_pnlBody.Controls.Add(this.label1);
+            this.m_pnlBody.Controls.Add(this.m_lblWelcome);
             this.m_pnlBody.Controls.Add(this.flowLayoutPanel1);
             this.m_pnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_pnlBody.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -119,13 +119,13 @@
             this.m_pnlBody.Size = new System.Drawing.Size(200, 208);
             this.m_pnlBody.TabIndex = 3;
             // 
-            // label1
+            // m_lblWelcome
             // 
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
+            this.m_lblWelcome.Location = new System.Drawing.Point(3, 0);
+            this.m_lblWelcome.Name = "m_lblWelcome";
+            this.m_lblWelcome.Size = new System.Drawing.Size(100, 23);
+            this.m_lblWelcome.TabIndex = 0;
+            this.m_lblWelcome.Text = "label1";
             // 
             // flowLayoutPanel1
             // 
@@ -161,7 +161,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.FlowLayoutPanel m_pnlBody;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label m_lblWelcome;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
