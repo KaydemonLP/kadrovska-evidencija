@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Evaluation_Manager
 {
@@ -25,9 +26,10 @@ namespace Evaluation_Manager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmLogin());
 
             DBLayer.DB.SetConfiguration("IPS23_vbohnec21", "vbohnec21", "mGiJ_$JR");
+
+            Application.Run(new FrmLogin());
             // SQL Server data tools
             // add sql server
             // naziv servera 

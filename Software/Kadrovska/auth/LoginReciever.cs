@@ -1,18 +1,13 @@
-﻿using Google;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Requests;
 using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Logging;
-using Google.Apis.Util;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Policy;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,57 +16,25 @@ namespace Kadrovska.Auth
 {
     public class CLoginReciever : ICodeReceiver
     {
-        public CLoginReciever()
-        {
-            RedirectUri = $"http://localhost:{GetRandomUnusedPort()}/authorize/";
-        }
-
-        // Close page response for this instance.
-        private readonly string m_strClosePageResponse =
-        @"<html>
-          <head><title>OAuth 2.0 Authentication Token Received</title></head>
-          <body>
-            Received verification code. You may now close this window.
-            <script type='text/javascript'>
-              // This doesn't work on every browser.
-              window.setTimeout(function() {
-                  this.focus();
-                  window.opener = this;
-                  window.open('', '_self', ''); 
-                  window.close(); 
-                }, 1000);
-              //if (window.opener) { window.opener.checkToken(); }
-            </script>
-          </body>
-        </html>";
-
-        // There is a race condition on the port used for the loopback callback.
-        // This is not good, but is now difficult to change due to RedirectUri and ReceiveCodeAsync
-        // being public methods.
-
         public string RedirectUri
         {
             get; set;
         }
 
-        Process m_Browser = null;
+        private static HttpListener m_ResponseListener = null;
 
-        public async Task<AuthorizationCodeResponseUrl> ReceiveCodeAsync(AuthorizationCodeRequestUrl url,
-            CancellationToken taskCancellationToken)
+        private readonly string m_strClosePageResponse =
+        @"<html>
+          <head><title>Zavrsetak</title></head>
+          <body>
+            Verifikacija uspjesna, smijete zatvoriti ovaj prozor.
+          </body>
+        </html>";
+
+        public CLoginReciever()
         {
-            var authorizationUrl = url.Build().AbsoluteUri;
-            var listener = StartListener();
-
-            m_Browser = Process.Start(authorizationUrl);
-            m_Browser.Exited += (object sender,EventArgs e) => {
-                listener.Stop();
-            };
-
-            var ret = await GetResponseFromListener(listener, taskCancellationToken).ConfigureAwait(false);
-
-            return ret;
+            RedirectUri = $"http://localhost:{GetRandomUnusedPort()}/authorize/";
         }
-
         private static int GetRandomUnusedPort()
         {
             var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -86,15 +49,21 @@ namespace Kadrovska.Auth
             }
         }
 
-
-        private HttpListener StartListener()
+        private byte[] GetResponseStringAsBytes()
         {
+            return Encoding.UTF8.GetBytes(m_strClosePageResponse);
+        }
+
+        private void StartListener()
+        {
+            if (m_ResponseListener != null)
+                return;
+
             try
             {
-                var listener = new HttpListener();
-                listener.Prefixes.Add(RedirectUri);
-                listener.Start();
-                return listener;
+                m_ResponseListener = new HttpListener();
+                m_ResponseListener.Prefixes.Add(RedirectUri);
+                m_ResponseListener.Start();
             }
             catch
             {
@@ -103,45 +72,53 @@ namespace Kadrovska.Auth
             }
         }
 
-        private async Task<AuthorizationCodeResponseUrl> GetResponseFromListener(HttpListener listener, CancellationToken ct)
+        public async Task<AuthorizationCodeResponseUrl> ReceiveCodeAsync(AuthorizationCodeRequestUrl url,
+            CancellationToken taskCancellationToken)
         {
-            HttpListenerContext context;
-            using (ct.Register(listener.Stop))
+            var authorizationUrl = url.Build().AbsoluteUri;
+            LocalAuthentificationHandler.m_strAuthUrlFull = authorizationUrl;
+
+            StartListener();
+
+            Process.Start(authorizationUrl);
+
+            var ret = await GetResponseFromListener(m_ResponseListener, taskCancellationToken).ConfigureAwait(false);
+
+            return ret;
+        }
+
+        private async Task<AuthorizationCodeResponseUrl> GetResponseFromListener(HttpListener listener, CancellationToken cancelationToken)
+        {
+            HttpListenerContext comunicationHandler;
+
+            // "Using" postavi da se Registration klasa briše nakon izvođenja ovog dijela koda 
+            using( cancelationToken.Register(listener.Stop) )
             {
-                // Wait to get the authorization code response.
-                try
-                {
-                    context = await listener.GetContextAsync().ConfigureAwait(false);
-                }
-                catch (Exception) when (ct.IsCancellationRequested)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    // Next line will never be reached because cancellation will always have been requested in this catch block.
-                    // But it's required to satisfy compiler.
-                    throw new InvalidOperationException();
-                }
-                catch (Exception) when (m_Browser == null)
-                {
-
-                    throw;
-                }
-
+               comunicationHandler = await listener.GetContextAsync().ConfigureAwait(false);
             }
-            NameValueCollection coll = context.Request.QueryString;
+            NameValueCollection query = comunicationHandler.Request.QueryString;
 
             // Write a "close" response.
-            var bytes = Encoding.UTF8.GetBytes(m_strClosePageResponse);
-            context.Response.ContentLength64 = bytes.Length;
-            context.Response.SendChunked = false;
-            context.Response.KeepAlive = false;
-            var output = context.Response.OutputStream;
-            await output.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
-            await output.FlushAsync().ConfigureAwait(false);
-            output.Close();
-            context.Response.Close();
+            SendHTMLResponseToUser(comunicationHandler);
 
             // Create a new response URL with a dictionary that contains all the response query parameters.
-            return new AuthorizationCodeResponseUrl(coll.AllKeys.ToDictionary(k => k, k => coll[k]));
+            return new AuthorizationCodeResponseUrl(query.AllKeys.ToDictionary(k => k, k => query[k]));
+        }
+
+        private void SendHTMLResponseToUser(HttpListenerContext communicationtHandler)
+        {
+            var bytes = GetResponseStringAsBytes();
+
+            communicationtHandler.Response.ContentLength64 = bytes.Length;
+            communicationtHandler.Response.SendChunked = false;
+            communicationtHandler.Response.KeepAlive = false;
+
+            var output = communicationtHandler.Response.OutputStream;
+            output.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+            output.FlushAsync().ConfigureAwait(false);
+            output.Close();
+
+            communicationtHandler.Response.Close();
         }
     }
 }
