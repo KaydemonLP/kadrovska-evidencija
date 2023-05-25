@@ -1,6 +1,6 @@
 ﻿namespace Kadrovska
 {
-    partial class FrmHomePage
+    partial class FrmMyRequests
     {
         /// <summary>
         /// Required designer variable.
@@ -30,11 +30,16 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.m_lblWelcome = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dgvZahtjevi = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -50,9 +55,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.button7);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 98;
+            this.splitContainer1.SplitterDistance = 43;
             this.splitContainer1.TabIndex = 7;
             // 
             // m_lblWelcome
@@ -61,41 +66,51 @@
             this.m_lblWelcome.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.m_lblWelcome.Location = new System.Drawing.Point(0, 0);
             this.m_lblWelcome.Name = "m_lblWelcome";
-            this.m_lblWelcome.Size = new System.Drawing.Size(800, 98);
+            this.m_lblWelcome.Size = new System.Drawing.Size(800, 43);
             this.m_lblWelcome.TabIndex = 7;
-            this.m_lblWelcome.Text = "Dobro došli\r\n";
+            this.m_lblWelcome.Text = "My requests";
             // 
-            // button7
+            // splitContainer2
             // 
-            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(92)))), ((int)(((byte)(142)))));
-            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(76)))), ((int)(((byte)(130)))));
-            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(56)))), ((int)(((byte)(102)))));
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Font = new System.Drawing.Font("Calibri", 8.25F);
-            this.button7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button7.Location = new System.Drawing.Point(690, 298);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(98, 38);
-            this.button7.TabIndex = 0;
-            this.button7.Text = "Zahtjevaj GDPR\r\npodatke";
-            this.button7.UseVisualStyleBackColor = false;
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // FrmHomePage
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.dgvZahtjevi);
+            this.splitContainer2.Panel1.Padding = new System.Windows.Forms.Padding(20);
+            this.splitContainer2.Size = new System.Drawing.Size(800, 403);
+            this.splitContainer2.SplitterDistance = 279;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // dgvZahtjevi
+            // 
+            this.dgvZahtjevi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvZahtjevi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvZahtjevi.Location = new System.Drawing.Point(20, 20);
+            this.dgvZahtjevi.Name = "dgvZahtjevi";
+            this.dgvZahtjevi.Size = new System.Drawing.Size(760, 239);
+            this.dgvZahtjevi.TabIndex = 0;
+            // 
+            // FrmMyRequests
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FrmHomePage";
+            this.Name = "FrmMyRequests";
             this.Text = "Upravitelj Kadrovskih Zahtjeva";
-            this.Load += new System.EventHandler(this.FrmHomePage_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -103,6 +118,7 @@
         #endregion
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label m_lblWelcome;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView dgvZahtjevi;
     }
 }

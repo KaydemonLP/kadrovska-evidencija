@@ -29,11 +29,11 @@ namespace Evaluation_Manager
 
         public void OnCredentialsLoaded()
         {
-            FrmHomePage frmHomePage = new FrmHomePage();
+            FrmMainContainer frmMainContainer = new FrmMainContainer();
             InsertUserIfNotExistYet();
 
             Hide();
-            frmHomePage.ShowDialog();
+            frmMainContainer.ShowDialog();
             Close();
         }
 
