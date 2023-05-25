@@ -24,7 +24,7 @@ namespace Evaluation_Manager
         private void InsertUserIfNotExistYet()
         {
             if (KorisnikRepository.GetUser(LocalAuthentificationHandler.GetUserInfo().Subject) == null)
-                KorisnikRepository.InsertUser(LocalAuthentificationHandler.GetLocalCredential(), LocalAuthentificationHandler.GetUserInfo());
+				KorisnikRepository.InsertUser(LocalAuthentificationHandler.GetLocalCredential(), LocalAuthentificationHandler.GetUserInfo());
         }
 
         public void OnCredentialsLoaded()

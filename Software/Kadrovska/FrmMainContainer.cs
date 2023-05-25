@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Evaluation_Manager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,7 +43,8 @@ namespace Kadrovska
             m_aFormList[0] = new FrmHomePage();
             m_aFormList[1] = new FrmMyRequests();
 
-            for (int i = 0; i < 6; i++)
+
+			for (int i = 0; i < 6; i++)
             {
                 if (m_aFormList[i] == null)
                     continue;

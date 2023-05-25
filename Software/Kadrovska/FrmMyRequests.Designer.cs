@@ -28,97 +28,338 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.m_lblWelcome = new System.Windows.Forms.Label();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.dgvZahtjevi = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.m_lblWelcome);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 43;
-            this.splitContainer1.TabIndex = 7;
-            // 
-            // m_lblWelcome
-            // 
-            this.m_lblWelcome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_lblWelcome.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.m_lblWelcome.Location = new System.Drawing.Point(0, 0);
-            this.m_lblWelcome.Name = "m_lblWelcome";
-            this.m_lblWelcome.Size = new System.Drawing.Size(800, 43);
-            this.m_lblWelcome.TabIndex = 7;
-            this.m_lblWelcome.Text = "My requests";
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.dgvZahtjevi);
-            this.splitContainer2.Panel1.Padding = new System.Windows.Forms.Padding(20);
-            this.splitContainer2.Size = new System.Drawing.Size(800, 403);
-            this.splitContainer2.SplitterDistance = 279;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // dgvZahtjevi
-            // 
-            this.dgvZahtjevi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvZahtjevi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvZahtjevi.Location = new System.Drawing.Point(20, 20);
-            this.dgvZahtjevi.Name = "dgvZahtjevi";
-            this.dgvZahtjevi.Size = new System.Drawing.Size(760, 239);
-            this.dgvZahtjevi.TabIndex = 0;
-            // 
-            // FrmMyRequests
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.splitContainer1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FrmMyRequests";
-            this.Text = "Upravitelj Kadrovskih Zahtjeva";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).EndInit();
-            this.ResumeLayout(false);
+			this.pnlBodyAndHeader = new System.Windows.Forms.SplitContainer();
+			this.m_lblWelcome = new System.Windows.Forms.Label();
+			this.pnlDisplayAndAdd = new System.Windows.Forms.SplitContainer();
+			this.dgvZahtjevi = new System.Windows.Forms.DataGridView();
+			this.pnlAddAndButtons = new System.Windows.Forms.SplitContainer();
+			this.pnlAddTable = new System.Windows.Forms.TableLayoutPanel();
+			this.lblEndAbsenseInput = new System.Windows.Forms.Label();
+			this.lblStartAbsenseInput = new System.Windows.Forms.Label();
+			this.Description = new System.Windows.Forms.Label();
+			this.lblAbsenseEnd = new System.Windows.Forms.Label();
+			this.lblAbsenseStart = new System.Windows.Forms.Label();
+			this.lblInputType = new System.Windows.Forms.Label();
+			this.txtOpis = new System.Windows.Forms.TextBox();
+			this.btnSubmit = new System.Windows.Forms.Button();
+			this.cldStartAbsense = new System.Windows.Forms.MonthCalendar();
+			this.cldEndAbsense = new System.Windows.Forms.MonthCalendar();
+			this.cboType = new Kadrovska.components.DockableComboBox();
+			((System.ComponentModel.ISupportInitialize)(this.pnlBodyAndHeader)).BeginInit();
+			this.pnlBodyAndHeader.Panel1.SuspendLayout();
+			this.pnlBodyAndHeader.Panel2.SuspendLayout();
+			this.pnlBodyAndHeader.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pnlDisplayAndAdd)).BeginInit();
+			this.pnlDisplayAndAdd.Panel1.SuspendLayout();
+			this.pnlDisplayAndAdd.Panel2.SuspendLayout();
+			this.pnlDisplayAndAdd.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pnlAddAndButtons)).BeginInit();
+			this.pnlAddAndButtons.Panel1.SuspendLayout();
+			this.pnlAddAndButtons.Panel2.SuspendLayout();
+			this.pnlAddAndButtons.SuspendLayout();
+			this.pnlAddTable.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// pnlBodyAndHeader
+			// 
+			this.pnlBodyAndHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlBodyAndHeader.Location = new System.Drawing.Point(0, 0);
+			this.pnlBodyAndHeader.Name = "pnlBodyAndHeader";
+			this.pnlBodyAndHeader.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// pnlBodyAndHeader.Panel1
+			// 
+			this.pnlBodyAndHeader.Panel1.Controls.Add(this.m_lblWelcome);
+			// 
+			// pnlBodyAndHeader.Panel2
+			// 
+			this.pnlBodyAndHeader.Panel2.Controls.Add(this.pnlDisplayAndAdd);
+			this.pnlBodyAndHeader.Size = new System.Drawing.Size(855, 510);
+			this.pnlBodyAndHeader.SplitterDistance = 49;
+			this.pnlBodyAndHeader.TabIndex = 7;
+			// 
+			// m_lblWelcome
+			// 
+			this.m_lblWelcome.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.m_lblWelcome.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.m_lblWelcome.Location = new System.Drawing.Point(0, 0);
+			this.m_lblWelcome.Name = "m_lblWelcome";
+			this.m_lblWelcome.Size = new System.Drawing.Size(855, 49);
+			this.m_lblWelcome.TabIndex = 7;
+			this.m_lblWelcome.Text = "Moji Zahtjevi";
+			// 
+			// pnlDisplayAndAdd
+			// 
+			this.pnlDisplayAndAdd.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlDisplayAndAdd.Location = new System.Drawing.Point(0, 0);
+			this.pnlDisplayAndAdd.Name = "pnlDisplayAndAdd";
+			this.pnlDisplayAndAdd.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// pnlDisplayAndAdd.Panel1
+			// 
+			this.pnlDisplayAndAdd.Panel1.Controls.Add(this.dgvZahtjevi);
+			this.pnlDisplayAndAdd.Panel1.Padding = new System.Windows.Forms.Padding(10);
+			// 
+			// pnlDisplayAndAdd.Panel2
+			// 
+			this.pnlDisplayAndAdd.Panel2.Controls.Add(this.pnlAddAndButtons);
+			this.pnlDisplayAndAdd.Panel2.Padding = new System.Windows.Forms.Padding(10);
+			this.pnlDisplayAndAdd.Size = new System.Drawing.Size(855, 457);
+			this.pnlDisplayAndAdd.SplitterDistance = 322;
+			this.pnlDisplayAndAdd.TabIndex = 0;
+			// 
+			// dgvZahtjevi
+			// 
+			this.dgvZahtjevi.AllowUserToAddRows = false;
+			this.dgvZahtjevi.AllowUserToDeleteRows = false;
+			this.dgvZahtjevi.AllowUserToOrderColumns = true;
+			this.dgvZahtjevi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.dgvZahtjevi.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+			this.dgvZahtjevi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvZahtjevi.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dgvZahtjevi.Location = new System.Drawing.Point(10, 10);
+			this.dgvZahtjevi.Name = "dgvZahtjevi";
+			this.dgvZahtjevi.ReadOnly = true;
+			this.dgvZahtjevi.RowHeadersVisible = false;
+			this.dgvZahtjevi.ShowEditingIcon = false;
+			this.dgvZahtjevi.Size = new System.Drawing.Size(835, 302);
+			this.dgvZahtjevi.TabIndex = 0;
+			this.dgvZahtjevi.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvZahtjevi_CellFormatting);
+			// 
+			// pnlAddAndButtons
+			// 
+			this.pnlAddAndButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlAddAndButtons.Location = new System.Drawing.Point(10, 10);
+			this.pnlAddAndButtons.Margin = new System.Windows.Forms.Padding(0);
+			this.pnlAddAndButtons.Name = "pnlAddAndButtons";
+			this.pnlAddAndButtons.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// pnlAddAndButtons.Panel1
+			// 
+			this.pnlAddAndButtons.Panel1.Controls.Add(this.pnlAddTable);
+			// 
+			// pnlAddAndButtons.Panel2
+			// 
+			this.pnlAddAndButtons.Panel2.Controls.Add(this.btnSubmit);
+			this.pnlAddAndButtons.Size = new System.Drawing.Size(835, 111);
+			this.pnlAddAndButtons.SplitterDistance = 79;
+			this.pnlAddAndButtons.TabIndex = 0;
+			// 
+			// pnlAddTable
+			// 
+			this.pnlAddTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Outset;
+			this.pnlAddTable.ColumnCount = 4;
+			this.pnlAddTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.pnlAddTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.pnlAddTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.pnlAddTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.pnlAddTable.Controls.Add(this.lblEndAbsenseInput, 0, 1);
+			this.pnlAddTable.Controls.Add(this.lblStartAbsenseInput, 0, 1);
+			this.pnlAddTable.Controls.Add(this.Description, 3, 0);
+			this.pnlAddTable.Controls.Add(this.lblAbsenseEnd, 2, 0);
+			this.pnlAddTable.Controls.Add(this.lblAbsenseStart, 1, 0);
+			this.pnlAddTable.Controls.Add(this.lblInputType, 0, 0);
+			this.pnlAddTable.Controls.Add(this.cboType, 0, 1);
+			this.pnlAddTable.Controls.Add(this.txtOpis, 3, 1);
+			this.pnlAddTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlAddTable.Location = new System.Drawing.Point(0, 0);
+			this.pnlAddTable.Name = "pnlAddTable";
+			this.pnlAddTable.RowCount = 2;
+			this.pnlAddTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.pnlAddTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+			this.pnlAddTable.Size = new System.Drawing.Size(835, 79);
+			this.pnlAddTable.TabIndex = 0;
+			this.pnlAddTable.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+			// 
+			// lblEndAbsenseInput
+			// 
+			this.lblEndAbsenseInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblEndAbsenseInput.AutoSize = true;
+			this.lblEndAbsenseInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblEndAbsenseInput.Location = new System.Drawing.Point(339, 33);
+			this.lblEndAbsenseInput.Name = "lblEndAbsenseInput";
+			this.lblEndAbsenseInput.Size = new System.Drawing.Size(159, 44);
+			this.lblEndAbsenseInput.TabIndex = 6;
+			this.lblEndAbsenseInput.Text = "--/--/--";
+			this.lblEndAbsenseInput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblEndAbsenseInput.Click += new System.EventHandler(this.lblEndAbsenseInput_Click);
+			// 
+			// lblStartAbsenseInput
+			// 
+			this.lblStartAbsenseInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblStartAbsenseInput.AutoSize = true;
+			this.lblStartAbsenseInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblStartAbsenseInput.Location = new System.Drawing.Point(172, 33);
+			this.lblStartAbsenseInput.Name = "lblStartAbsenseInput";
+			this.lblStartAbsenseInput.Size = new System.Drawing.Size(159, 44);
+			this.lblStartAbsenseInput.TabIndex = 5;
+			this.lblStartAbsenseInput.Text = "--/--/--";
+			this.lblStartAbsenseInput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblStartAbsenseInput.Click += new System.EventHandler(this.lblStartAbsenseInput_Click);
+			// 
+			// Description
+			// 
+			this.Description.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.Description.AutoSize = true;
+			this.Description.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.Description.Location = new System.Drawing.Point(506, 2);
+			this.Description.Name = "Description";
+			this.Description.Size = new System.Drawing.Size(324, 29);
+			this.Description.TabIndex = 3;
+			this.Description.Text = "Opis";
+			this.Description.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblAbsenseEnd
+			// 
+			this.lblAbsenseEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAbsenseEnd.AutoSize = true;
+			this.lblAbsenseEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblAbsenseEnd.Location = new System.Drawing.Point(339, 2);
+			this.lblAbsenseEnd.Name = "lblAbsenseEnd";
+			this.lblAbsenseEnd.Size = new System.Drawing.Size(159, 29);
+			this.lblAbsenseEnd.TabIndex = 2;
+			this.lblAbsenseEnd.Text = "Kraj odsustva";
+			this.lblAbsenseEnd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblAbsenseStart
+			// 
+			this.lblAbsenseStart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAbsenseStart.AutoSize = true;
+			this.lblAbsenseStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblAbsenseStart.Location = new System.Drawing.Point(172, 2);
+			this.lblAbsenseStart.Name = "lblAbsenseStart";
+			this.lblAbsenseStart.Size = new System.Drawing.Size(159, 29);
+			this.lblAbsenseStart.TabIndex = 1;
+			this.lblAbsenseStart.Text = "Početak odsustva";
+			this.lblAbsenseStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblInputType
+			// 
+			this.lblInputType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblInputType.AutoSize = true;
+			this.lblInputType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblInputType.Location = new System.Drawing.Point(5, 2);
+			this.lblInputType.Name = "lblInputType";
+			this.lblInputType.Size = new System.Drawing.Size(159, 29);
+			this.lblInputType.TabIndex = 0;
+			this.lblInputType.Text = "Vrsta Zahtjeva";
+			this.lblInputType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// txtOpis
+			// 
+			this.txtOpis.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtOpis.Location = new System.Drawing.Point(503, 33);
+			this.txtOpis.Margin = new System.Windows.Forms.Padding(0);
+			this.txtOpis.Multiline = true;
+			this.txtOpis.Name = "txtOpis";
+			this.txtOpis.Size = new System.Drawing.Size(330, 44);
+			this.txtOpis.TabIndex = 7;
+			// 
+			// btnSubmit
+			// 
+			this.btnSubmit.Dock = System.Windows.Forms.DockStyle.Right;
+			this.btnSubmit.Location = new System.Drawing.Point(734, 0);
+			this.btnSubmit.Name = "btnSubmit";
+			this.btnSubmit.Size = new System.Drawing.Size(101, 28);
+			this.btnSubmit.TabIndex = 2;
+			this.btnSubmit.Text = "Stvori Zahtijev";
+			this.btnSubmit.UseVisualStyleBackColor = true;
+			this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+			// 
+			// cldStartAbsense
+			// 
+			this.cldStartAbsense.Location = new System.Drawing.Point(314, 174);
+			this.cldStartAbsense.Name = "cldStartAbsense";
+			this.cldStartAbsense.TabIndex = 8;
+			this.cldStartAbsense.Visible = false;
+			this.cldStartAbsense.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.cldStartAbsense_DateSelected);
+			this.cldStartAbsense.Leave += new System.EventHandler(this.cld_Leave);
+			// 
+			// cldEndAbsense
+			// 
+			this.cldEndAbsense.Location = new System.Drawing.Point(555, 175);
+			this.cldEndAbsense.Name = "cldEndAbsense";
+			this.cldEndAbsense.TabIndex = 9;
+			this.cldEndAbsense.Visible = false;
+			this.cldEndAbsense.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.cldEndAbsense_DateSelected);
+			this.cldEndAbsense.Leave += new System.EventHandler(this.cld_Leave);
+			// 
+			// cboType
+			// 
+			this.cboType.DisplayMember = "m_strName";
+			this.cboType.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.cboType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+			this.cboType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cboType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.cboType.FormattingEnabled = true;
+			this.cboType.ItemHeight = 38;
+			this.cboType.Location = new System.Drawing.Point(2, 33);
+			this.cboType.Margin = new System.Windows.Forms.Padding(0);
+			this.cboType.Name = "cboType";
+			this.cboType.Size = new System.Drawing.Size(165, 44);
+			this.cboType.TabIndex = 4;
+			// 
+			// FrmMyRequests
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(855, 510);
+			this.Controls.Add(this.cldEndAbsense);
+			this.Controls.Add(this.cldStartAbsense);
+			this.Controls.Add(this.pnlBodyAndHeader);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Name = "FrmMyRequests";
+			this.Text = "Upravitelj Kadrovskih Zahtjeva";
+			this.Load += new System.EventHandler(this.FrmMyRequests_Load);
+			this.pnlBodyAndHeader.Panel1.ResumeLayout(false);
+			this.pnlBodyAndHeader.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pnlBodyAndHeader)).EndInit();
+			this.pnlBodyAndHeader.ResumeLayout(false);
+			this.pnlDisplayAndAdd.Panel1.ResumeLayout(false);
+			this.pnlDisplayAndAdd.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pnlDisplayAndAdd)).EndInit();
+			this.pnlDisplayAndAdd.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.dgvZahtjevi)).EndInit();
+			this.pnlAddAndButtons.Panel1.ResumeLayout(false);
+			this.pnlAddAndButtons.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pnlAddAndButtons)).EndInit();
+			this.pnlAddAndButtons.ResumeLayout(false);
+			this.pnlAddTable.ResumeLayout(false);
+			this.pnlAddTable.PerformLayout();
+			this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer pnlBodyAndHeader;
         private System.Windows.Forms.Label m_lblWelcome;
-        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.SplitContainer pnlDisplayAndAdd;
         private System.Windows.Forms.DataGridView dgvZahtjevi;
-    }
+		private System.Windows.Forms.SplitContainer pnlAddAndButtons;
+		private System.Windows.Forms.TableLayoutPanel pnlAddTable;
+		private System.Windows.Forms.Button btnSubmit;
+		private System.Windows.Forms.Label lblInputType;
+		private System.Windows.Forms.Label Description;
+		private System.Windows.Forms.Label lblAbsenseEnd;
+		private System.Windows.Forms.Label lblAbsenseStart;
+		private Kadrovska.components.DockableComboBox cboType;
+		private System.Windows.Forms.MonthCalendar cldStartAbsense;
+		private System.Windows.Forms.Label lblEndAbsenseInput;
+		private System.Windows.Forms.Label lblStartAbsenseInput;
+		private System.Windows.Forms.MonthCalendar cldEndAbsense;
+		private System.Windows.Forms.TextBox txtOpis;
+	}
 }

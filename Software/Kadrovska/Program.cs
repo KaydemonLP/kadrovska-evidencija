@@ -11,15 +11,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Evaluation_Manager.staticrepositories;
+using Kadrovska.models;
 
 namespace Evaluation_Manager
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        /// 
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		///
+
+		private static void InitialiseStaticRepositories()
+        {
+			StaticRepositories.VrstaZahtjevaRepository.FetchData();
+			StaticRepositories.StatusZahtjevaRepository.FetchData();
+		}
 
         [STAThread]
         static void Main()
@@ -29,7 +37,9 @@ namespace Evaluation_Manager
 
             DBLayer.DB.SetConfiguration("IPS23_vbohnec21", "vbohnec21", "mGiJ_$JR");
 
-            Application.Run(new FrmLogin());
+            InitialiseStaticRepositories();
+
+			Application.Run(new FrmLogin());
             // SQL Server data tools
             // add sql server
             // naziv servera 

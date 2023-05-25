@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs9812.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vs5FB5.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs9812.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vs5FB5.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="auth\LoginReciever.cs" />
+    <Compile Include="components\DockableComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FrmFinalReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,20 +130,27 @@
     <Compile Include="models\Aktivnost.cs" />
     <Compile Include="auth\LocalAuthentificationHandler.cs" />
     <Compile Include="models\Evaluation.cs" />
+    <Compile Include="models\staticmodels\IStaticRepositoryItem.cs" />
     <Compile Include="models\Korisnik.cs" />
     <Compile Include="models\Request.cs" />
     <Compile Include="models\Student.cs" />
     <Compile Include="models\StudentReportView.cs" />
     <Compile Include="models\Teacher.cs" />
     <Compile Include="models\Person.cs" />
+    <Compile Include="models\staticmodels\StatusZahtjeva.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="repositories\EvaluationRepository.cs" />
+    <Compile Include="models\staticmodels\VrstaZahtjeva.cs" />
     <Compile Include="repositories\ZahtjevRepository.cs" />
     <Compile Include="repositories\KorisnikRepository.cs" />
     <Compile Include="repositories\TeacherRepository.cs" />
     <Compile Include="repositories\ActivityRepository.cs" />
     <Compile Include="repositories\StudentRepository.cs" />
+    <Compile Include="repositories\staticrepositories\StaticRepository.cs" />
+    <EmbeddedResource Include="components\DockableComboBox.resx">
+      <DependentUpon>DockableComboBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmEvaluation.resx">
       <DependentUpon>FrmEvaluation.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,5 +209,6 @@
   <ItemGroup>
     <Content Include="dlls\DBLayer.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

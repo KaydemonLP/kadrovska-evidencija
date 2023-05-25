@@ -31,7 +31,8 @@ namespace Evaluation_Manager.repositories
 
         public static List<CStudent> GetStudents()
         {
-            var students = new List<CStudent>();
+			DB.SetConfiguration("EvaluationManager", "student", "student");
+			var students = new List<CStudent>();
 
             string sql = "SELECT * FROM Students";
             DB.OpenConnection();
@@ -45,7 +46,8 @@ namespace Evaluation_Manager.repositories
             reader.Close();
             DB.CloseConnection();
 
-            return students;
+			DB.SetConfiguration("IPS23_vbohnec21", "vbohnec21", "mGiJ_$JR");
+			return students;
         } //public static List
 
         private static CStudent CreateObject(SqlDataReader reader)

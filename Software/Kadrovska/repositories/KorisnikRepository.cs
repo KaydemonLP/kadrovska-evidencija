@@ -9,12 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kadrovska.models;
+using Kadrovska.Auth;
 
 namespace Evaluation_Manager.repositories
 {
     public static class KorisnikRepository
     {
-        public static CKorisnik GetUser( string authCode )
+		public static CKorisnik GetUser( string authCode )
         {
             CKorisnik user = null;
 
@@ -32,7 +33,25 @@ namespace Evaluation_Manager.repositories
             return user;
         } //public static Student GetStudent
 
-        public static List<CKorisnik> GetUsers()
+		public static CKorisnik GetUser(int id)
+		{
+			CKorisnik user = null;
+
+			string sql = $"SELECT * FROM Korisnici WHERE ID = '{id}'";
+			DB.OpenConnection();
+			var reader = DB.GetDataReader(sql);
+			if (reader.HasRows)
+			{
+				reader.Read();
+				user = CreateObject(reader);
+				reader.Close();
+			}
+
+			DB.CloseConnection();
+			return user;
+		} //public static Student GetStudent
+
+		public static List<CKorisnik> GetUsers()
         {
             var users = new List<CKorisnik>();
 

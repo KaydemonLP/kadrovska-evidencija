@@ -51,5 +51,5 @@ namespace Evaluation_Manager
             frmFinalReport.ShowDialog();
             Show();
         }
-    }
+	}
 }
