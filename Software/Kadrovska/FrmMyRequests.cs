@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using Evaluation_Manager.repositories;
 using Evaluation_Manager.staticrepositories;
@@ -13,6 +16,8 @@ namespace Kadrovska
         {
             InitializeComponent();
         }
+
+		List<DateTime> m_aTakenDates = new List<DateTime>();
 
         private void ReSupplyRequestData()
         {
@@ -32,17 +37,26 @@ namespace Kadrovska
 
 			dgvZahtjevi.Columns["m_datLastModified"].Visible = false;
 			dgvZahtjevi.Columns["m_iIDUser"].Visible = false;
-		}
+
+			foreach( CRequest request in requests )
+			{
+				for( 
+					DateTime date = DateTime.Now.Date > request.m_datStart.Date ? request.m_datStart : DateTime.Now.Date;
+					date.Date <= request.m_datEnd.Date; date = date.AddDays(1) )
+				{
+                    cldStartAbsense.AddBoldedDate(date);
+                    cldEndAbsense.AddBoldedDate(date);
+                    m_aTakenDates.Add(date);
+                }
+            }
+        }
 
 		private void FrmMyRequests_Load(object sender, EventArgs e)
         {
 			ReSupplyRequestData();
 			cboType.DataSource = StaticRepositories.VrstaZahtjevaRepository.GetList();
 			cboType.Height = (int)(pnlAddTable.RowStyles[1].Height * pnlAddTable.Height);
-
-			lblEndAbsenseInput.Text = DateTime.Now.Date.ToString();
-			lblStartAbsenseInput.Text = DateTime.Now.Date.ToString();
-		}
+        }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -109,7 +123,7 @@ namespace Kadrovska
 			
 			cldStartAbsense.Visible = true;
 
-			var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
+            var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
 				label.FindForm().PointToClient(label.Parent.PointToScreen(label.Location));
 
 			location.Y += label.Height;
@@ -134,23 +148,33 @@ namespace Kadrovska
 			cldEndAbsense.Location = location;
 
 			cldEndAbsense.Focus();
-		}
+
+        }
 
 		private void cld_Leave(object sender, EventArgs e)
 		{
 			((MonthCalendar)(sender)).Visible = false;
 		}
 
-		private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
+        private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
 		{
-			((MonthCalendar)(sender)).Visible = false;
-			lblStartAbsenseInput.Text = date.Start.Date.ToString();
-		}
+            if( m_aTakenDates.Exists(x => x.Date == date.Start.Date) )
+				return;
+
+            ((MonthCalendar)(sender)).Visible = false;
+			lblStartAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
+
+			cldEndAbsense.MinDate = date.Start.Date;
+			lblEndAbsenseInput.Text = "--/--/--";
+        }
 
 		private void cldEndAbsense_DateSelected(object sender, DateRangeEventArgs date)
 		{
+            if( m_aTakenDates.Exists(x => x.Date == date.Start.Date) )
+				return;
+
 			((MonthCalendar)(sender)).Visible = false;
-			lblEndAbsenseInput.Text = date.Start.Date.ToString();
+			lblEndAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
 		}
 
 		private void btnSubmit_Click(object sender, EventArgs e)
@@ -162,9 +186,21 @@ namespace Kadrovska
 			request.m_datStart = DateTime.Parse( lblStartAbsenseInput.Text );
 			request.m_datEnd = DateTime.Parse( lblEndAbsenseInput.Text );
 			request.m_strDescription = txtOpis.Text;
-			ZahtjevRepository.InsertRequest(request);
 
-			ReSupplyRequestData();
+			((Button)(sender)).Enabled = false;
+
+			ThreadPool.QueueUserWorkItem((state) =>
+			{
+				ZahtjevRepository.InsertRequest(request);
+                
+
+                Invoke(new Action(() => 
+				{
+                    ReSupplyRequestData();
+                    ((Button)(sender)).Enabled = true; 
+				}));
+                
+            });
 		}
 	}
 }

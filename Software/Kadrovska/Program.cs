@@ -16,14 +16,18 @@ using Kadrovska.models;
 
 namespace Evaluation_Manager
 {
+
     internal static class Program
     {
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		///
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        ///
 
-		private static void InitialiseStaticRepositories()
+        public static string g_strAppDataFolder = "kadrovska.evidencija";
+        public static string g_strAuthFolder = "auth";
+
+        private static void InitialiseStaticRepositories()
         {
 			StaticRepositories.VrstaZahtjevaRepository.FetchData();
 			StaticRepositories.StatusZahtjevaRepository.FetchData();

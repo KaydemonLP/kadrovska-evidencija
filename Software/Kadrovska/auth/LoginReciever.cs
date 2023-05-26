@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using Evaluation_Manager;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Requests;
 using Google.Apis.Auth.OAuth2.Responses;
 using System;
@@ -67,8 +68,9 @@ namespace Kadrovska.Auth
             }
             catch
             {
+                m_ResponseListener = null;
                 // Fail
-                throw;
+                throw new Exception("Nije bilo moguce pokrenut http slusatelj, provjerite privilegije, portove i postavke Firewall-a, i pokusajte ponovo.");
             }
         }
 
@@ -81,6 +83,7 @@ namespace Kadrovska.Auth
             StartListener();
 
             Process.Start(authorizationUrl);
+            FrmLogin.SetStatusText("Otvaranje pretrazivaca...");
 
             var ret = await GetResponseFromListener(m_ResponseListener, taskCancellationToken).ConfigureAwait(false);
 
@@ -96,6 +99,7 @@ namespace Kadrovska.Auth
             {
                comunicationHandler = await listener.GetContextAsync().ConfigureAwait(false);
             }
+            FrmLogin.SetStatusText("Odgovor primljen! Otvaranje formi...", FrmLogin.StatusType.Success);
             NameValueCollection query = comunicationHandler.Request.QueryString;
 
             // Write a "close" response.

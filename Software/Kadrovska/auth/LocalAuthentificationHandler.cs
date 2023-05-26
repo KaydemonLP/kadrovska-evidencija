@@ -23,7 +23,7 @@ namespace Kadrovska.Auth
 
         private static UserCredential m_Credential = null;
         private static GoogleJsonWebSignature.Payload m_UserInfo = null;
-        private static FileDataStore m_FileDataStore = new FileDataStore("kadrovska.evidencija");
+        private static FileDataStore m_FileDataStore = new FileDataStore($"{Program.g_strAppDataFolder}/{Program.g_strAuthFolder}");
         private static CLoginReciever m_Receiver = new CLoginReciever();
         private static bool m_bStarted = false;
 
@@ -90,11 +90,14 @@ namespace Kadrovska.Auth
                 if( m_strAuthUrlFull == "" )
                     return;
 
+                FrmLogin.SetStatusText("Otvaranje pretrazivaca...");
                 Process.Start(m_strAuthUrlFull);
                 return;
             }
 
             m_bStarted = true;
+
+            FrmLogin.SetStatusText("Pokretanje...");
 
             // Inače, pokreni novi threat i započni listener
             ThreadPool.QueueUserWorkItem((state) =>
@@ -113,14 +116,23 @@ namespace Kadrovska.Auth
                     TokenResponse token = m_Credential.Token;
                     m_UserInfo = GoogleJsonWebSignature.ValidateAsync(token.IdToken).Result;
                 }
-                catch
+                catch( Exception status )
                 {
-                    throw;
+                    string strMessage = status.InnerException.Message;
+                    
+                    if( strMessage == "" )
+                        strMessage = "Dogodila se pogreska tjekom obrade vaseg zahtjeva, molimo vas pokusajte ponovo.";
+                    
+                    FrmLogin.SetStatusText(strMessage, FrmLogin.StatusType.Error);
+                    return;
+                }
+                finally
+                {
+                    m_strAuthUrlFull = "";
+                    m_bStarted = false;
                 }
 
                 FrmLogin.Main.Invoke(new Action(FrmLogin.Main.OnCredentialsLoaded));
-
-                m_bStarted = false;
             });
         }
     }

@@ -4,12 +4,42 @@ using Kadrovska;
 using Kadrovska.Auth;
 using System.Windows.Forms;
 using Evaluation_Manager.repositories;
+using System.Drawing;
 
 namespace Evaluation_Manager
 {
     public partial class FrmLogin : Form
     {
         public static FrmLogin Main;
+        public enum StatusType
+        {
+            Info,
+            Success,
+            Error
+        }
+
+        public static void SetStatusText( string strText, StatusType type = StatusType.Info )
+        {
+            Main.Invoke(new Action( () => 
+            {
+                switch( type )
+                {
+                    default:
+                    case StatusType.Info:
+                        Main.lblStatus.ForeColor = Color.FromArgb(255, 0, 0, 0);
+                        break;
+                    case StatusType.Success:
+                        Main.lblStatus.ForeColor = Color.FromArgb(255, 0, 255, 0);
+                        break;
+                    case StatusType.Error:
+                        Main.lblStatus.ForeColor = Color.FromArgb(255, 255, 0, 0);
+                        break;
+                }
+
+                Main.lblStatus.Text = strText; 
+            }));
+        }
+
         public FrmLogin()
         {
             Main = this;
