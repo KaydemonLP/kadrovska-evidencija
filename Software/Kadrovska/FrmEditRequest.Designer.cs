@@ -38,10 +38,10 @@
 			this.lblAbsenseEnd = new System.Windows.Forms.Label();
 			this.lblAbsenseStart = new System.Windows.Forms.Label();
 			this.lblInputType = new System.Windows.Forms.Label();
+			this.cboType = new Kadrovska.components.DockableComboBox();
 			this.txtOpis = new System.Windows.Forms.TextBox();
 			this.btnReset = new System.Windows.Forms.Button();
 			this.btnEdit = new System.Windows.Forms.Button();
-			this.cboType = new Kadrovska.components.DockableComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.pnlAddAndButtons)).BeginInit();
 			this.pnlAddAndButtons.Panel1.SuspendLayout();
 			this.pnlAddAndButtons.Panel2.SuspendLayout();
@@ -201,6 +201,21 @@
 			this.lblInputType.Text = "Vrsta Zahtjeva";
 			this.lblInputType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// cboType
+			// 
+			this.cboType.DisplayMember = "m_strName";
+			this.cboType.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.cboType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+			this.cboType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cboType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.cboType.FormattingEnabled = true;
+			this.cboType.ItemHeight = 91;
+			this.cboType.Location = new System.Drawing.Point(2, 68);
+			this.cboType.Margin = new System.Windows.Forms.Padding(0);
+			this.cboType.Name = "cboType";
+			this.cboType.Size = new System.Drawing.Size(157, 97);
+			this.cboType.TabIndex = 4;
+			// 
 			// txtOpis
 			// 
 			this.txtOpis.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -233,21 +248,6 @@
 			this.btnEdit.UseVisualStyleBackColor = true;
 			this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
 			// 
-			// cboType
-			// 
-			this.cboType.DisplayMember = "m_strName";
-			this.cboType.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.cboType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-			this.cboType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.cboType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.cboType.FormattingEnabled = true;
-			this.cboType.ItemHeight = 91;
-			this.cboType.Location = new System.Drawing.Point(2, 68);
-			this.cboType.Margin = new System.Windows.Forms.Padding(0);
-			this.cboType.Name = "cboType";
-			this.cboType.Size = new System.Drawing.Size(157, 97);
-			this.cboType.TabIndex = 4;
-			// 
 			// FrmEditRequest
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -258,6 +258,7 @@
 			this.Controls.Add(this.pnlAddAndButtons);
 			this.Name = "FrmEditRequest";
 			this.Text = "Edit Request";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmEditRequest_FormClosing);
 			this.Load += new System.EventHandler(this.FrmEditRequest_Load);
 			this.pnlAddAndButtons.Panel1.ResumeLayout(false);
 			this.pnlAddAndButtons.Panel2.ResumeLayout(false);

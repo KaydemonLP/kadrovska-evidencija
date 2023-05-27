@@ -28,5 +28,10 @@ namespace Kadrovska
         {
 
         }
-    }
+
+		private void btnGDPR_Click(object sender, EventArgs e)
+		{
+			DialogResult dialogResult = MessageBox.Show("Ova funkcionalnost nije dio prototipa.", "Upozorenje", MessageBoxButtons.OK);
+		}
+	}
 }

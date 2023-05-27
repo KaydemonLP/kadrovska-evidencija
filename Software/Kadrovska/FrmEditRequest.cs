@@ -11,53 +11,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Kadrovska
 {
 	public partial class FrmEditRequest : Form
 	{
 		CRequest m_Request;
-		FrmMyRequests m_Parent;
+		ZahtjevEditHandler m_RequestHandler;
 		public FrmEditRequest( CRequest request, FrmMyRequests parent )
 		{
 			m_Request = request;
-			m_Parent = parent;
 			InitializeComponent();
-		}
-		private void ResetSubmitForm()
-		{
-			cldStartAbsense.SelectionStart = m_Request.m_datStart;
-			cldEndAbsense.MinDate = cldStartAbsense.SelectionStart;
-			cldEndAbsense.SelectionStart = m_Request.m_datEnd;
-			cboType.SelectedItem = StaticRepositories.VrstaZahtjevaRepository.GetList().Find( x => x.m_iID == m_Request.m_iType );
-			lblStartAbsenseInput.Text = m_Request.m_datStart.ToString("dd/MMM/yyyy");
-			lblEndAbsenseInput.Text = m_Request.m_datEnd.ToString("dd/MMM/yyyy");
-			txtOpis.Text = m_Request.m_strDescription;
-		}
 
-		private void OpenCalendarAtLabel(MonthCalendar calendar, Label label)
-		{
-			calendar.Visible = true;
+			m_RequestHandler = new ZahtjevEditHandler
+			(
+				btnEdit,
+				btnReset,
+				cboType,
+				lblStartAbsenseInput,
+				lblEndAbsenseInput,
+				txtOpis,
+				cldStartAbsense,
+				cldEndAbsense,
+				this,
 
-			var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
-				label.FindForm().PointToClient(label.Parent.PointToScreen(label.Location));
-
-			location.Y += label.Height;
-			location.Y -= calendar.Height;
-
-			calendar.Location = location;
-
-			calendar.Focus();
+				m_Request
+			);
 		}
 
 		private void lblStartAbsenseInput_Click(object sender, EventArgs e)
 		{
-			OpenCalendarAtLabel(cldStartAbsense, ((Label)sender));
+			ZahtjevRequestHandler.OpenCalendarAtLabel(cldStartAbsense, ((Label)sender));
 		}
 
 		private void lblEndAbsenseInput_Click(object sender, EventArgs e)
 		{
-			OpenCalendarAtLabel(cldEndAbsense, ((Label)sender));
+			ZahtjevRequestHandler.OpenCalendarAtLabel(cldEndAbsense, ((Label)sender));
 		}
 
 		private void cld_Leave(object sender, EventArgs e)
@@ -65,63 +55,66 @@ namespace Kadrovska
 			((MonthCalendar)(sender)).Visible = false;
 		}
 
-		private void SetLabelToDate(Label lblStartAbsenseInput, MonthCalendar sender, DateRangeEventArgs date)
-		{
-			if (m_Parent.m_aTakenDates.Exists(x => x.Date == date.Start.Date))
-				return;
-
-			sender.Visible = false;
-
-			lblStartAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
-		}
-
 		private void SetMinimumEndDate(DateTime date)
 		{
 			cldEndAbsense.MinDate = date;
-			lblEndAbsenseInput.Text = "--/--/--";
+			lblEndAbsenseInput.Text = ZahtjevRequestHandler.m_strDefaultDate;
 		}
 
 		private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
 		{
-			SetLabelToDate(lblStartAbsenseInput, ((MonthCalendar)(sender)), date);
+			bool bSuccess = ZahtjevRequestHandler.SetLabelToDate( lblStartAbsenseInput, date.Start.Date, ((MonthCalendar)(sender)));
 
-			SetMinimumEndDate(date.Start.Date);
+			((MonthCalendar)(sender)).Visible = !bSuccess;
+
+			if( bSuccess )
+				SetMinimumEndDate(date.Start.Date);
 		}
 
 		private void cldEndAbsense_DateSelected(object sender, DateRangeEventArgs date)
 		{
-			SetLabelToDate(lblEndAbsenseInput, ((MonthCalendar)(sender)), date);
-		}
+			bool bSuccess = ZahtjevRequestHandler.SetLabelToDate( lblEndAbsenseInput, date.Start.Date, ((MonthCalendar)(sender)));
 
-		private CRequest GetRequestFromInputs()
-		{
-			CRequest request = new CRequest();
-
-			request.m_iIDUser = KorisnikRepository.GetUser(LocalAuthentificationHandler.GetUserInfo().Subject).m_iID;
-			request.m_iType = ((CVrstaZahtjeva)cboType.SelectedItem).m_iID;
-			request.m_datStart = DateTime.Parse(lblStartAbsenseInput.Text);
-			request.m_datEnd = DateTime.Parse(lblEndAbsenseInput.Text);
-			request.m_strDescription = txtOpis.Text;
-
-			return request;
+			((MonthCalendar)(sender)).Visible = !bSuccess;
 		}
 
 		private void btnEdit_Click(object sender, EventArgs e)
 		{
-			ZahtjevRepository.UpdateRequest(GetRequestFromInputs(), m_Request.m_iID);
-			m_Parent.ReSupplyRequestData();
+			m_RequestHandler.OnSendClick();
 			Close();
 		}
 
 		private void btnReset_Click(object sender, EventArgs e)
 		{
-			ResetSubmitForm();
+			m_RequestHandler.OnResetClick();
+		}
+
+		private void AllowRequestDateRange()
+		{
+			for (
+				DateTime date = DateTime.Now.Date > m_Request.m_datStart.Date ? DateTime.Now.Date : m_Request.m_datStart;
+				date.Date <= m_Request.m_datEnd.Date; date = date.AddDays(1))
+			{
+				cldStartAbsense.RemoveBoldedDate(date);
+				cldEndAbsense.RemoveBoldedDate(date);
+			}
 		}
 
 		private void FrmEditRequest_Load(object sender, EventArgs e)
 		{
-			cboType.DataSource = StaticRepositories.VrstaZahtjevaRepository.GetList();
-			ResetSubmitForm();
+			ZahtjevRequestHandler.AddCalendar(cldStartAbsense);
+			ZahtjevRequestHandler.AddCalendar(cldEndAbsense);
+			FrmMyRequests.Default.ReSupplyRequestData();
+
+			AllowRequestDateRange();
+
+			m_RequestHandler.ResetForm();
+		}
+
+		private void FrmEditRequest_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			ZahtjevRequestHandler.RemoveCalendar(cldStartAbsense);
+			ZahtjevRequestHandler.RemoveCalendar(cldEndAbsense);
 		}
 	}
 }

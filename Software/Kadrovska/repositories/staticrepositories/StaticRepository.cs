@@ -25,7 +25,9 @@ namespace Evaluation_Manager.staticrepositories
         private string m_strDatabaseName;
 
         public List<T> GetList() { return m_aList; }
-        private string GetDatabaseName() { return m_strDatabaseName; }
+		public T GetItem(Predicate<T> match){ return m_aList.Find(match); }
+
+		private string GetDatabaseName() { return m_strDatabaseName; }
         public void SetDatabaseName(string name) { m_strDatabaseName = name; }
 
         public void FetchData()

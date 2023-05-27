@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Evaluation_Manager.repositories;
+using Evaluation_Manager.staticrepositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -63,6 +65,27 @@ namespace Kadrovska.models
 		public bool IsAwaitingApproval()
 		{
 			return m_iStatus == 1;
+		}
+
+		public string GetTypeName()
+		{
+			return StaticRepositories.VrstaZahtjevaRepository.GetItem(x => x.m_iID == m_iType).m_strName;
+		}
+
+		public string GetStatusText()
+		{
+			return StaticRepositories.StatusZahtjevaRepository.GetItem(x => x.m_iID == m_iStatus).m_strStatusText;
+		}
+
+		public string GetApproverName()
+		{
+			if( m_iIDApprover <= 0 )
+				return "";
+
+			var user = KorisnikRepository.GetUser(m_iIDApprover);
+
+			// Set the formatted value to the translated string
+			return user.m_strIme + " " + user.m_strPrezime;
 		}
 	}
 }

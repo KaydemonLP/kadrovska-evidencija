@@ -33,6 +33,7 @@
 			this.pnlDisplayAndAdd = new System.Windows.Forms.SplitContainer();
 			this.pnlDisplayAndButtons = new System.Windows.Forms.SplitContainer();
 			this.dgvZahtjevi = new System.Windows.Forms.DataGridView();
+			this.txtSearch = new System.Windows.Forms.TextBox();
 			this.btnEdit = new System.Windows.Forms.Button();
 			this.btnErase = new System.Windows.Forms.Button();
 			this.pnlAddAndButtons = new System.Windows.Forms.SplitContainer();
@@ -45,6 +46,7 @@
 			this.lblInputType = new System.Windows.Forms.Label();
 			this.cboType = new Kadrovska.components.DockableComboBox();
 			this.txtOpis = new System.Windows.Forms.TextBox();
+			this.btnReset = new System.Windows.Forms.Button();
 			this.btnSubmit = new System.Windows.Forms.Button();
 			this.cldStartAbsense = new System.Windows.Forms.MonthCalendar();
 			this.cldEndAbsense = new System.Windows.Forms.MonthCalendar();
@@ -128,6 +130,7 @@
 			// pnlDisplayAndButtons.Panel1
 			// 
 			this.pnlDisplayAndButtons.Panel1.Controls.Add(this.dgvZahtjevi);
+			this.pnlDisplayAndButtons.Panel1.Controls.Add(this.txtSearch);
 			// 
 			// pnlDisplayAndButtons.Panel2
 			// 
@@ -146,15 +149,24 @@
 			this.dgvZahtjevi.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
 			this.dgvZahtjevi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvZahtjevi.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dgvZahtjevi.Location = new System.Drawing.Point(0, 0);
+			this.dgvZahtjevi.Location = new System.Drawing.Point(0, 20);
 			this.dgvZahtjevi.Name = "dgvZahtjevi";
 			this.dgvZahtjevi.ReadOnly = true;
 			this.dgvZahtjevi.RowHeadersVisible = false;
 			this.dgvZahtjevi.ShowEditingIcon = false;
-			this.dgvZahtjevi.Size = new System.Drawing.Size(835, 266);
-			this.dgvZahtjevi.TabIndex = 0;
+			this.dgvZahtjevi.Size = new System.Drawing.Size(835, 246);
+			this.dgvZahtjevi.TabIndex = 1;
 			this.dgvZahtjevi.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvZahtjevi_CellFormatting);
 			this.dgvZahtjevi.CurrentCellChanged += new System.EventHandler(this.dgvZahtjevi_CurrentCellChanged);
+			// 
+			// txtSearch
+			// 
+			this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
+			this.txtSearch.Location = new System.Drawing.Point(0, 0);
+			this.txtSearch.Name = "txtSearch";
+			this.txtSearch.Size = new System.Drawing.Size(835, 20);
+			this.txtSearch.TabIndex = 0;
+			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
 			// 
 			// btnEdit
 			// 
@@ -195,6 +207,7 @@
 			// 
 			// pnlAddAndButtons.Panel2
 			// 
+			this.pnlAddAndButtons.Panel2.Controls.Add(this.btnReset);
 			this.pnlAddAndButtons.Panel2.Controls.Add(this.btnSubmit);
 			this.pnlAddAndButtons.Size = new System.Drawing.Size(835, 111);
 			this.pnlAddAndButtons.SplitterDistance = 79;
@@ -336,6 +349,17 @@
 			this.txtOpis.Size = new System.Drawing.Size(330, 44);
 			this.txtOpis.TabIndex = 7;
 			// 
+			// btnReset
+			// 
+			this.btnReset.Dock = System.Windows.Forms.DockStyle.Right;
+			this.btnReset.Location = new System.Drawing.Point(633, 0);
+			this.btnReset.Name = "btnReset";
+			this.btnReset.Size = new System.Drawing.Size(101, 28);
+			this.btnReset.TabIndex = 3;
+			this.btnReset.Text = "Reset";
+			this.btnReset.UseVisualStyleBackColor = true;
+			this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+			// 
 			// btnSubmit
 			// 
 			this.btnSubmit.Dock = System.Windows.Forms.DockStyle.Right;
@@ -388,6 +412,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pnlDisplayAndAdd)).EndInit();
 			this.pnlDisplayAndAdd.ResumeLayout(false);
 			this.pnlDisplayAndButtons.Panel1.ResumeLayout(false);
+			this.pnlDisplayAndButtons.Panel1.PerformLayout();
 			this.pnlDisplayAndButtons.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pnlDisplayAndButtons)).EndInit();
 			this.pnlDisplayAndButtons.ResumeLayout(false);
@@ -406,7 +431,6 @@
         private System.Windows.Forms.SplitContainer pnlBodyAndHeader;
         private System.Windows.Forms.Label m_lblWelcome;
         private System.Windows.Forms.SplitContainer pnlDisplayAndAdd;
-        private System.Windows.Forms.DataGridView dgvZahtjevi;
 		private System.Windows.Forms.SplitContainer pnlAddAndButtons;
 		private System.Windows.Forms.TableLayoutPanel pnlAddTable;
 		private System.Windows.Forms.Button btnSubmit;
@@ -423,5 +447,8 @@
 		private System.Windows.Forms.SplitContainer pnlDisplayAndButtons;
 		private System.Windows.Forms.Button btnErase;
 		private System.Windows.Forms.Button btnEdit;
+		private System.Windows.Forms.Button btnReset;
+		private System.Windows.Forms.DataGridView dgvZahtjevi;
+		private System.Windows.Forms.TextBox txtSearch;
 	}
 }

@@ -75,7 +75,10 @@ namespace Kadrovska
         {
             int iIndex = ((Button)sender).TabIndex;
             if( m_aFormList[iIndex] == null )
-                return;
+            { 
+			    DialogResult dialogResult = MessageBox.Show("Ova funkcionalnost nije dio prototipa.", "Upozorenje", MessageBoxButtons.OK);
+				return;
+            }
 
             if( iIndex == m_iActiveIndex )
                 return;

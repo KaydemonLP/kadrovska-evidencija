@@ -157,7 +157,7 @@ namespace Evaluation_Manager.repositories
             sql += $"{request.m_iType}, ";
             sql += $"'{request.m_datStart.Date.ToString("yyyy-MM-dd")}', ";
             sql += $"'{request.m_datEnd.Date.ToString("yyyy-MM-dd")}', ";
-            sql += $"'{request.m_strDescription}', ";
+            sql += $"'{request.m_strDescription.Replace("'", "''")}', ";
             sql += $"1 ";
             sql += $")";
             DB.OpenConnection();
@@ -174,7 +174,7 @@ namespace Evaluation_Manager.repositories
 			sql += $"KrajOdsustva = '{request.m_datEnd.ToString("yyyy-MM-dd")}', ";
 			sql += $"StatusZahtjeva = 1 ,";
 			sql += $"DatumPromjeneZahtjeva = GETDATE() ,";
-			sql += $"Opis = '{request.m_strDescription}' ";
+			sql += $"Opis = '{request.m_strDescription.Replace("'", "''")}' ";
 
             if( request.m_iIDApprover > 0 )
 			    sql += $",IDOdobrivatelja = {request.m_iIDApprover} ";

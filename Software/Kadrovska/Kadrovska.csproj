@@ -154,6 +154,7 @@
     <Compile Include="repositories\ActivityRepository.cs" />
     <Compile Include="repositories\StudentRepository.cs" />
     <Compile Include="repositories\staticrepositories\StaticRepository.cs" />
+    <Compile Include="ZahtjevRequestHandler.cs" />
     <EmbeddedResource Include="components\DockableComboBox.resx">
       <DependentUpon>DockableComboBox.cs</DependentUpon>
     </EmbeddedResource>

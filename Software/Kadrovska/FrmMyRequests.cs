@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Evaluation_Manager.repositories;
@@ -12,22 +14,41 @@ namespace Kadrovska
 {
     public partial class FrmMyRequests : Form
     {
-        public FrmMyRequests()
+		ZahtjevSubmitHandler m_RequestHandler;
+		public static FrmMyRequests Default;
+		public FrmMyRequests()
         {
-            InitializeComponent();
-        }
+			Default = this;
 
-		public List<DateTime> m_aTakenDates = new List<DateTime>();
+			InitializeComponent();
+
+			m_RequestHandler = new ZahtjevSubmitHandler
+			(
+				btnSubmit,
+				btnReset,
+				cboType,
+				lblStartAbsenseInput,
+				lblEndAbsenseInput,
+				txtOpis,
+				cldStartAbsense,
+				cldEndAbsense,
+				this
+			);
+		}
+
+		List<CRequest> m_aRequests;
+
 		private bool m_bLoadingData = false;
 
-        public void ReSupplyRequestData()
+		#region DisplayRequestsMethods
+		public void ReSupplyRequestData()
         {
 			string strAuthCode = LocalAuthentificationHandler.GetUserInfo().Subject;
 			int iUserID = KorisnikRepository.GetUser(strAuthCode).m_iID;
-			var requests = ZahtjevRepository.GetRequests(iUserID);
+			m_aRequests = ZahtjevRepository.GetRequests(iUserID);
 
 			m_bLoadingData = true;
-			dgvZahtjevi.DataSource = requests;
+			dgvZahtjevi.DataSource = m_aRequests;
 			m_bLoadingData = false;
 
 			dgvZahtjevi.Columns["m_iID"].DisplayIndex = 0;
@@ -44,51 +65,17 @@ namespace Kadrovska
 
 			HideOrShowEditButtons();
 
-			LoadTakenDates(requests);
-		}
-
-		private void LoadTakenDates(List<CRequest> requests)
-		{
-			cldStartAbsense.RemoveAllBoldedDates();
-			cldEndAbsense.RemoveAllBoldedDates();
-			m_aTakenDates.Clear();
-
-			foreach ( CRequest request in requests )
-			{
-				for( 
-					DateTime date = DateTime.Now.Date > request.m_datStart.Date ? DateTime.Now.Date : request.m_datStart;
-					date.Date <= request.m_datEnd.Date; date = date.AddDays(1) )
-				{
-                    cldStartAbsense.AddBoldedDate(date);
-                    cldEndAbsense.AddBoldedDate(date);
-                    m_aTakenDates.Add(date);
-                }
-			}
-
-			// Ovo je malo neuobičajeno, no, nažalost, Invalidate layout ne Refresh-a BoldedDate
-			// Tako da moramo ručno promijeniti stranicu i natrag da se ponovno postave
-			var initial = cldStartAbsense.SelectionStart;
-			cldStartAbsense.SelectionStart = cldStartAbsense.SelectionStart.AddMonths(1);
-			cldStartAbsense.Refresh();
-
-			cldStartAbsense.SelectionStart = initial;
-			cldStartAbsense.Refresh();
-
-			initial = cldEndAbsense.SelectionStart;
-			cldEndAbsense.SelectionStart = cldEndAbsense.SelectionStart.AddMonths(2);
-			cldEndAbsense.Refresh();
-
-			cldEndAbsense.SelectionStart = initial;
-			cldEndAbsense.Refresh();
+			ZahtjevRequestHandler.LoadTakenDates(m_aRequests);
 		}
 
 		private void FrmMyRequests_Load(object sender, EventArgs e)
         {
-			ReSupplyRequestData();
-			cboType.DataSource = StaticRepositories.VrstaZahtjevaRepository.GetList();
+			ZahtjevRequestHandler.AddCalendar(cldStartAbsense);
+			ZahtjevRequestHandler.AddCalendar(cldEndAbsense);
 
-			cldStartAbsense.MinDate = DateTime.Now;
-			cldEndAbsense.MinDate = DateTime.Now;
+			ReSupplyRequestData();
+
+			m_RequestHandler.ResetForm();
 		}
 
 		private void dgvZahtjevi_CellFormatting(object sender, DataGridViewCellFormattingEventArgs cell)
@@ -125,7 +112,7 @@ namespace Kadrovska
 					// Get the ID value from the cell
 					int id =(int)cell.Value;
 
-					if(id == -1)
+					if(id <= 0)
 					{
 						cell.Value = "";
 						return;
@@ -140,129 +127,7 @@ namespace Kadrovska
 			}
 		}
 
-		private void OpenCalendarAtLabel( MonthCalendar calendar, Label label )
-		{
-			calendar.Visible = true;
-
-			var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
-				label.FindForm().PointToClient(label.Parent.PointToScreen(label.Location));
-
-			location.Y += label.Height;
-			location.Y -= calendar.Height;
-
-			calendar.Location = location;
-
-			calendar.Focus();
-		}
-
-		private void lblStartAbsenseInput_Click(object sender, EventArgs e)
-		{
-			OpenCalendarAtLabel( cldStartAbsense, ((Label)sender));
-		}
-
-		private void lblEndAbsenseInput_Click(object sender, EventArgs e)
-		{
-			OpenCalendarAtLabel( cldEndAbsense, ((Label)sender) );
-		}
-
-		private void cld_Leave(object sender, EventArgs e)
-		{
-			((MonthCalendar)(sender)).Visible = false;
-		}
-
-		private void SetLabelToDate(Label lblStartAbsenseInput, MonthCalendar sender, DateRangeEventArgs date)
-		{
-            if( m_aTakenDates.Exists(x => x.Date == date.Start.Date) )
-				return;
-
-			sender.Visible = false;
-
-			lblStartAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
-		}
-
-		private void SetMinimumEndDate( DateTime date )
-		{
-			cldEndAbsense.MinDate = date;
-			lblEndAbsenseInput.Text = "--/--/--";
-		}
-
-		private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
-		{
-			SetLabelToDate( lblStartAbsenseInput, ((MonthCalendar)(sender)), date );
-
-			SetMinimumEndDate( date.Start.Date );
-		}
-
-		private void cldEndAbsense_DateSelected(object sender, DateRangeEventArgs date)
-		{
-            SetLabelToDate( lblEndAbsenseInput, ((MonthCalendar)(sender)), date );
-		}
-
-		private CRequest GetRequestFromInputs()
-		{
-			CRequest request = new CRequest();
-
-			request.m_iIDUser = KorisnikRepository.GetUser(LocalAuthentificationHandler.GetUserInfo().Subject).m_iID;
-			request.m_iType = ((CVrstaZahtjeva)cboType.SelectedItem).m_iID;
-			request.m_datStart = DateTime.Parse(lblStartAbsenseInput.Text);
-			request.m_datEnd = DateTime.Parse(lblEndAbsenseInput.Text);
-			request.m_strDescription = txtOpis.Text;
-
-			return request;
-		}
-
-		private void ResetSubmitForm()
-		{
-			cldStartAbsense.SelectionStart = DateTime.Now;
-			cldEndAbsense.MinDate = cldStartAbsense.SelectionStart;
-			cldEndAbsense.SelectionStart = DateTime.Now;
-			cboType.SelectedIndex = 0;
-			lblStartAbsenseInput.Text = "--/--/--";
-			lblEndAbsenseInput.Text = "--/--/--";
-			txtOpis.Text = "";
-
-			EnableSubmitForm();
-		}
-
-		private void EnableSubmitForm()
-		{
-			btnSubmit.Enabled = true;
-			cboType.Enabled = true;
-			lblStartAbsenseInput.Enabled = true;
-			lblEndAbsenseInput.Enabled = true;
-			txtOpis.Enabled = true;
-		}
-
-		private void DisableSubmitForm()
-		{
-			btnSubmit.Enabled = false;
-			cboType.Enabled = false;
-			lblStartAbsenseInput.Enabled = false;
-			lblEndAbsenseInput.Enabled = false;
-			txtOpis.Enabled = false;
-		}
-
-		private void btnSubmit_Click(object sender, EventArgs e)
-		{
-			CRequest request = GetRequestFromInputs();
-			DisableSubmitForm();
-
-			ThreadPool.QueueUserWorkItem((state) =>
-			{
-				ZahtjevRepository.InsertRequest(request);
-                
-
-                Invoke(new Action(() => 
-				{
-                    ReSupplyRequestData();
-
-					ResetSubmitForm();
-				}));
-                
-            });
-		}
-
-		private void EnableEditButtons()
+	private void EnableEditButtons()
 		{
 			btnEdit.Enabled = true;
 			btnErase.Enabled = true;
@@ -274,10 +139,21 @@ namespace Kadrovska
 			btnErase.Enabled = false;
 		}
 
+		private void SelectRowOfSelectedCell()
+		{
+			if (dgvZahtjevi.CurrentRow != null)
+				dgvZahtjevi.CurrentRow.Selected = dgvZahtjevi.CurrentCell.Selected;
+		}
+
+		private void DisableEditIfDatePassed(DateTime date)
+		{
+			if (date < DateTime.Now.Date)
+				btnEdit.Enabled = false;
+		}
+
 		private void HideOrShowEditButtons()
 		{
-			if( dgvZahtjevi.CurrentRow != null )
-				dgvZahtjevi.CurrentRow.Selected = dgvZahtjevi.CurrentCell.Selected;
+			SelectRowOfSelectedCell();
 
 			if ( dgvZahtjevi.SelectedRows.Count != 1 )
 			{
@@ -294,6 +170,8 @@ namespace Kadrovska
 			}
 
 			EnableEditButtons();
+
+			DisableEditIfDatePassed( request.m_datEnd.Date );
 		}
 
 		private void dgvZahtjevi_CurrentCellChanged(object sender, EventArgs e)
@@ -307,6 +185,10 @@ namespace Kadrovska
 		private void btnErase_Click(object sender, EventArgs e)
 		{
 			if( dgvZahtjevi.SelectedRows.Count != 1 )
+				return;
+
+			DialogResult dialogResult = MessageBox.Show("Jeste li sigurni da zelite izbrisati ovaj zahtjev?", "Upozorenje", MessageBoxButtons.YesNo);
+			if( dialogResult == DialogResult.No )
 				return;
 
 			CRequest request = (CRequest)dgvZahtjevi.SelectedRows[0].DataBoundItem;
@@ -324,6 +206,90 @@ namespace Kadrovska
 
 			FrmEditRequest frmEdit = new FrmEditRequest(request, this);
 			frmEdit.ShowDialog();
+		}
+
+		#endregion
+
+		#region SendRequest
+		private void lblStartAbsenseInput_Click(object sender, EventArgs e)
+		{
+			ZahtjevRequestHandler.OpenCalendarAtLabel( cldStartAbsense, ((Label)sender));
+		}
+
+		private void lblEndAbsenseInput_Click(object sender, EventArgs e)
+		{
+			ZahtjevRequestHandler.OpenCalendarAtLabel( cldEndAbsense, ((Label)sender) );
+		}
+
+		private void cld_Leave(object sender, EventArgs e)
+		{
+			((MonthCalendar)(sender)).Visible = false;
+		}
+
+		private void SetMinimumEndDate( DateTime date )
+		{
+			cldEndAbsense.MinDate = date;
+			lblEndAbsenseInput.Text = ZahtjevRequestHandler.m_strDefaultDate;
+		}
+
+		private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
+		{
+			bool bSuccess = ZahtjevRequestHandler.SetLabelToDate( lblStartAbsenseInput, date.Start.Date, ((MonthCalendar)(sender)) );
+
+			((MonthCalendar)(sender)).Visible = !bSuccess;
+
+			if( bSuccess )
+			{ 
+				SetMinimumEndDate(date.Start.Date);
+				m_RequestHandler.CalculateSubmitButtonState();
+			}
+		}
+
+		private void cldEndAbsense_DateSelected(object sender, DateRangeEventArgs date)
+		{
+			bool bSuccess = ZahtjevRequestHandler.SetLabelToDate( lblEndAbsenseInput, date.Start.Date, ((MonthCalendar)(sender)) );
+
+			((MonthCalendar)(sender)).Visible = !bSuccess;
+
+
+			if( bSuccess )
+			{
+				m_RequestHandler.CalculateSubmitButtonState();
+			}
+		}
+
+		private void btnSubmit_Click(object sender, EventArgs e)
+		{
+			m_RequestHandler.OnSendClick();
+		}
+
+		#endregion
+
+		private void btnReset_Click(object sender, EventArgs e)
+		{
+			m_RequestHandler.OnResetClick();
+		}
+
+		private bool SearchRequest( CRequest request )
+		{
+			string searchText = txtSearch.Text.ToLower();
+
+			bool ret = false;
+
+			ret |= request.m_datCreationTime.ToString().ToLower().Contains(searchText);
+			ret |= request.GetTypeName().ToLower().Contains(searchText);
+			ret |= request.m_datStart.Date.ToString().ToLower().Contains(searchText);
+			ret |= request.m_datEnd.Date.ToString().ToLower().Contains(searchText);
+			ret |= request.m_strDescription.ToLower().Contains(searchText);
+			ret |= request.GetApproverName().ToLower().Contains(searchText);
+			ret |= request.GetStatusText().ToLower().Contains(searchText);
+
+			return ret;
+		}
+
+		private void txtSearch_TextChanged(object sender, EventArgs e)
+		{
+			dgvZahtjevi.DataSource = m_aRequests.FindAll(SearchRequest);
 		}
 	}
 }
