@@ -170,16 +170,27 @@ namespace Evaluation_Manager.repositories
             string sql = $"UPDATE Zahtjevi SET ";
 			sql += $"IDKorisnika = '{request.m_iIDUser}', ";
 			sql += $"IDVrsteZahtjeva = {request.m_iType}, ";
-			sql += $"PocetakOdustva = '{request.m_datStart.ToString("yyyy-MM-dd")}', ";
+			sql += $"PocetakOdsustva = '{request.m_datStart.ToString("yyyy-MM-dd")}', ";
 			sql += $"KrajOdsustva = '{request.m_datEnd.ToString("yyyy-MM-dd")}', ";
-			sql += $"Opis = '{request.m_strDescription}', ";
-			sql += $"StatusZahtjeva = 1, ";
-			sql += $"DatumPromjeneZahtjeva = GETDATE(), ";
-			sql += $"IDOdobrivatelja = {request.m_iIDApprover}, ";
-			sql += $" WHERE ID = {iID}";
+			sql += $"StatusZahtjeva = 1 ,";
+			sql += $"DatumPromjeneZahtjeva = GETDATE() ,";
+			sql += $"Opis = '{request.m_strDescription}' ";
+
+            if( request.m_iIDApprover > 0 )
+			    sql += $",IDOdobrivatelja = {request.m_iIDApprover} ";
+
+			sql += $" WHERE ID = {iID};";
             DB.OpenConnection();
             DB.ExecuteCommand(sql);
             DB.CloseConnection();
         }
-    } //public class ZahtjevRepository
+
+		public static void DeleteRequest(int iID)
+		{
+			string sql = $"DELETE FROM Zahtjevi WHERE ID={iID};";
+			DB.OpenConnection();
+			DB.ExecuteCommand(sql);
+			DB.CloseConnection();
+		}
+	} //public class ZahtjevRepository
 }

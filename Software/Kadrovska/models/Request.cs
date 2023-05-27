@@ -59,5 +59,10 @@ namespace Kadrovska.models
 		{
 			get; set;
 		}
+
+		public bool IsAwaitingApproval()
+		{
+			return m_iStatus == 1;
+		}
 	}
 }

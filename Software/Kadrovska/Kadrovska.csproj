@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs14B9.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vs4E0.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Win10\AppData\Local\Temp\vs14B9.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Bohnec\AppData\Local\Temp\vs4E0.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -79,6 +79,12 @@
     <Compile Include="auth\LoginReciever.cs" />
     <Compile Include="components\DockableComboBox.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FrmEditRequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEditRequest.Designer.cs">
+      <DependentUpon>FrmEditRequest.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmFinalReport.cs">
       <SubType>Form</SubType>
@@ -150,6 +156,9 @@
     <Compile Include="repositories\staticrepositories\StaticRepository.cs" />
     <EmbeddedResource Include="components\DockableComboBox.resx">
       <DependentUpon>DockableComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEditRequest.resx">
+      <DependentUpon>FrmEditRequest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEvaluation.resx">
       <DependentUpon>FrmEvaluation.cs</DependentUpon>

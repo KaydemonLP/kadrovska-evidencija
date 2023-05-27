@@ -17,14 +17,18 @@ namespace Kadrovska
             InitializeComponent();
         }
 
-		List<DateTime> m_aTakenDates = new List<DateTime>();
+		public List<DateTime> m_aTakenDates = new List<DateTime>();
+		private bool m_bLoadingData = false;
 
-        private void ReSupplyRequestData()
+        public void ReSupplyRequestData()
         {
 			string strAuthCode = LocalAuthentificationHandler.GetUserInfo().Subject;
 			int iUserID = KorisnikRepository.GetUser(strAuthCode).m_iID;
 			var requests = ZahtjevRepository.GetRequests(iUserID);
+
+			m_bLoadingData = true;
 			dgvZahtjevi.DataSource = requests;
+			m_bLoadingData = false;
 
 			dgvZahtjevi.Columns["m_iID"].DisplayIndex = 0;
 			dgvZahtjevi.Columns["m_datCreationTime"].DisplayIndex = 1;
@@ -38,30 +42,54 @@ namespace Kadrovska
 			dgvZahtjevi.Columns["m_datLastModified"].Visible = false;
 			dgvZahtjevi.Columns["m_iIDUser"].Visible = false;
 
-			foreach( CRequest request in requests )
+			HideOrShowEditButtons();
+
+			LoadTakenDates(requests);
+		}
+
+		private void LoadTakenDates(List<CRequest> requests)
+		{
+			cldStartAbsense.RemoveAllBoldedDates();
+			cldEndAbsense.RemoveAllBoldedDates();
+			m_aTakenDates.Clear();
+
+			foreach ( CRequest request in requests )
 			{
 				for( 
-					DateTime date = DateTime.Now.Date > request.m_datStart.Date ? request.m_datStart : DateTime.Now.Date;
+					DateTime date = DateTime.Now.Date > request.m_datStart.Date ? DateTime.Now.Date : request.m_datStart;
 					date.Date <= request.m_datEnd.Date; date = date.AddDays(1) )
 				{
                     cldStartAbsense.AddBoldedDate(date);
                     cldEndAbsense.AddBoldedDate(date);
                     m_aTakenDates.Add(date);
                 }
-            }
-        }
+			}
+
+			// Ovo je malo neuobičajeno, no, nažalost, Invalidate layout ne Refresh-a BoldedDate
+			// Tako da moramo ručno promijeniti stranicu i natrag da se ponovno postave
+			var initial = cldStartAbsense.SelectionStart;
+			cldStartAbsense.SelectionStart = cldStartAbsense.SelectionStart.AddMonths(1);
+			cldStartAbsense.Refresh();
+
+			cldStartAbsense.SelectionStart = initial;
+			cldStartAbsense.Refresh();
+
+			initial = cldEndAbsense.SelectionStart;
+			cldEndAbsense.SelectionStart = cldEndAbsense.SelectionStart.AddMonths(2);
+			cldEndAbsense.Refresh();
+
+			cldEndAbsense.SelectionStart = initial;
+			cldEndAbsense.Refresh();
+		}
 
 		private void FrmMyRequests_Load(object sender, EventArgs e)
         {
 			ReSupplyRequestData();
 			cboType.DataSource = StaticRepositories.VrstaZahtjevaRepository.GetList();
-			cboType.Height = (int)(pnlAddTable.RowStyles[1].Height * pnlAddTable.Height);
-        }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+			cldStartAbsense.MinDate = DateTime.Now;
+			cldEndAbsense.MinDate = DateTime.Now;
+		}
 
 		private void dgvZahtjevi_CellFormatting(object sender, DataGridViewCellFormattingEventArgs cell)
 		{
@@ -106,88 +134,118 @@ namespace Kadrovska
 					var user = KorisnikRepository.GetUser(id);
 
 					// Set the formatted value to the translated string
-					cell.Value = user.m_strIme;
+					cell.Value = user.m_strIme + " " + user.m_strPrezime;
 				}
 				break;
 			}
 		}
 
-		private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+		private void OpenCalendarAtLabel( MonthCalendar calendar, Label label )
 		{
-
-		}
-
-		private void lblStartAbsenseInput_Click(object sender, EventArgs e)
-		{
-			Label label = ((Label)sender);
-			
-			cldStartAbsense.Visible = true;
-
-            var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
-				label.FindForm().PointToClient(label.Parent.PointToScreen(label.Location));
-
-			location.Y += label.Height;
-			location.Y -= cldEndAbsense.Height;
-
-			cldStartAbsense.Location = location;
-
-			cldStartAbsense.Focus();
-		}
-
-		private void lblEndAbsenseInput_Click(object sender, EventArgs e)
-		{
-			Label label = ((Label)sender);
-			cldEndAbsense.Visible = true;
+			calendar.Visible = true;
 
 			var location = // Daje nam "Absolutnu" lokaciju label-a, tako da se naš popup kalendar može snaći
 				label.FindForm().PointToClient(label.Parent.PointToScreen(label.Location));
 
 			location.Y += label.Height;
-			location.Y -= cldEndAbsense.Height;
+			location.Y -= calendar.Height;
 
-			cldEndAbsense.Location = location;
+			calendar.Location = location;
 
-			cldEndAbsense.Focus();
+			calendar.Focus();
+		}
 
-        }
+		private void lblStartAbsenseInput_Click(object sender, EventArgs e)
+		{
+			OpenCalendarAtLabel( cldStartAbsense, ((Label)sender));
+		}
+
+		private void lblEndAbsenseInput_Click(object sender, EventArgs e)
+		{
+			OpenCalendarAtLabel( cldEndAbsense, ((Label)sender) );
+		}
 
 		private void cld_Leave(object sender, EventArgs e)
 		{
 			((MonthCalendar)(sender)).Visible = false;
 		}
 
-        private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
+		private void SetLabelToDate(Label lblStartAbsenseInput, MonthCalendar sender, DateRangeEventArgs date)
 		{
             if( m_aTakenDates.Exists(x => x.Date == date.Start.Date) )
 				return;
 
-            ((MonthCalendar)(sender)).Visible = false;
-			lblStartAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
+			sender.Visible = false;
 
-			cldEndAbsense.MinDate = date.Start.Date;
+			lblStartAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
+		}
+
+		private void SetMinimumEndDate( DateTime date )
+		{
+			cldEndAbsense.MinDate = date;
 			lblEndAbsenseInput.Text = "--/--/--";
-        }
+		}
+
+		private void cldStartAbsense_DateSelected(object sender, DateRangeEventArgs date)
+		{
+			SetLabelToDate( lblStartAbsenseInput, ((MonthCalendar)(sender)), date );
+
+			SetMinimumEndDate( date.Start.Date );
+		}
 
 		private void cldEndAbsense_DateSelected(object sender, DateRangeEventArgs date)
 		{
-            if( m_aTakenDates.Exists(x => x.Date == date.Start.Date) )
-				return;
-
-			((MonthCalendar)(sender)).Visible = false;
-			lblEndAbsenseInput.Text = date.Start.Date.ToString("dd/MMMM/yyyy");
+            SetLabelToDate( lblEndAbsenseInput, ((MonthCalendar)(sender)), date );
 		}
 
-		private void btnSubmit_Click(object sender, EventArgs e)
+		private CRequest GetRequestFromInputs()
 		{
 			CRequest request = new CRequest();
 
 			request.m_iIDUser = KorisnikRepository.GetUser(LocalAuthentificationHandler.GetUserInfo().Subject).m_iID;
 			request.m_iType = ((CVrstaZahtjeva)cboType.SelectedItem).m_iID;
-			request.m_datStart = DateTime.Parse( lblStartAbsenseInput.Text );
-			request.m_datEnd = DateTime.Parse( lblEndAbsenseInput.Text );
+			request.m_datStart = DateTime.Parse(lblStartAbsenseInput.Text);
+			request.m_datEnd = DateTime.Parse(lblEndAbsenseInput.Text);
 			request.m_strDescription = txtOpis.Text;
 
-			((Button)(sender)).Enabled = false;
+			return request;
+		}
+
+		private void ResetSubmitForm()
+		{
+			cldStartAbsense.SelectionStart = DateTime.Now;
+			cldEndAbsense.MinDate = cldStartAbsense.SelectionStart;
+			cldEndAbsense.SelectionStart = DateTime.Now;
+			cboType.SelectedIndex = 0;
+			lblStartAbsenseInput.Text = "--/--/--";
+			lblEndAbsenseInput.Text = "--/--/--";
+			txtOpis.Text = "";
+
+			EnableSubmitForm();
+		}
+
+		private void EnableSubmitForm()
+		{
+			btnSubmit.Enabled = true;
+			cboType.Enabled = true;
+			lblStartAbsenseInput.Enabled = true;
+			lblEndAbsenseInput.Enabled = true;
+			txtOpis.Enabled = true;
+		}
+
+		private void DisableSubmitForm()
+		{
+			btnSubmit.Enabled = false;
+			cboType.Enabled = false;
+			lblStartAbsenseInput.Enabled = false;
+			lblEndAbsenseInput.Enabled = false;
+			txtOpis.Enabled = false;
+		}
+
+		private void btnSubmit_Click(object sender, EventArgs e)
+		{
+			CRequest request = GetRequestFromInputs();
+			DisableSubmitForm();
 
 			ThreadPool.QueueUserWorkItem((state) =>
 			{
@@ -197,10 +255,75 @@ namespace Kadrovska
                 Invoke(new Action(() => 
 				{
                     ReSupplyRequestData();
-                    ((Button)(sender)).Enabled = true; 
+
+					ResetSubmitForm();
 				}));
                 
             });
+		}
+
+		private void EnableEditButtons()
+		{
+			btnEdit.Enabled = true;
+			btnErase.Enabled = true;
+		}
+
+		private void DisableEditButtons()
+		{
+			btnEdit.Enabled = false;
+			btnErase.Enabled = false;
+		}
+
+		private void HideOrShowEditButtons()
+		{
+			if( dgvZahtjevi.CurrentRow != null )
+				dgvZahtjevi.CurrentRow.Selected = dgvZahtjevi.CurrentCell.Selected;
+
+			if ( dgvZahtjevi.SelectedRows.Count != 1 )
+			{
+				DisableEditButtons();
+				return;
+			}
+
+			CRequest request = (CRequest)dgvZahtjevi.SelectedRows[0].DataBoundItem;
+
+			if( !request.IsAwaitingApproval() )
+			{
+				DisableEditButtons();
+				return;
+			}
+
+			EnableEditButtons();
+		}
+
+		private void dgvZahtjevi_CurrentCellChanged(object sender, EventArgs e)
+		{
+			if( m_bLoadingData )
+				return;
+
+			HideOrShowEditButtons();
+		}
+
+		private void btnErase_Click(object sender, EventArgs e)
+		{
+			if( dgvZahtjevi.SelectedRows.Count != 1 )
+				return;
+
+			CRequest request = (CRequest)dgvZahtjevi.SelectedRows[0].DataBoundItem;
+
+			ZahtjevRepository.DeleteRequest(request.m_iID);
+			ReSupplyRequestData();
+		}
+
+		private void btnEdit_Click(object sender, EventArgs e)
+		{
+			if( dgvZahtjevi.SelectedRows.Count != 1 )
+				return;
+
+			CRequest request = (CRequest)dgvZahtjevi.SelectedRows[0].DataBoundItem;
+
+			FrmEditRequest frmEdit = new FrmEditRequest(request, this);
+			frmEdit.ShowDialog();
 		}
 	}
 }
