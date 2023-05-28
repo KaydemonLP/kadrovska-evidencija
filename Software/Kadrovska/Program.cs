@@ -1,20 +1,8 @@
-﻿using Evaluation_Manager.repositories;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Util.Store;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net.Sockets;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
-using System.Drawing;
-using Evaluation_Manager.staticrepositories;
-using Kadrovska.models;
+using Kadrovska.staticrepositories;
 
-namespace Evaluation_Manager
+namespace Kadrovska
 {
 
     internal static class Program

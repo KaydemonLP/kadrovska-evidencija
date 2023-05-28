@@ -1,17 +1,10 @@
 ﻿using DBLayer;
-using Evaluation_Manager.models;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Auth;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Kadrovska.models;
-using Kadrovska.Auth;
 
-namespace Evaluation_Manager.staticrepositories
+namespace Kadrovska.staticrepositories
 {
     public class CStaticRepository<T>
     {

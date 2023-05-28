@@ -86,18 +86,6 @@
     <Compile Include="FrmEditRequest.Designer.cs">
       <DependentUpon>FrmEditRequest.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmFinalReport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmFinalReport.Designer.cs">
-      <DependentUpon>FrmFinalReport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmEvaluation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmEvaluation.Designer.cs">
-      <DependentUpon>FrmEvaluation.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmMyRequests.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,37 +110,21 @@
     <Compile Include="FrmMainContainer.Designer.cs">
       <DependentUpon>FrmMainContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmStudents.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmStudents.Designer.cs">
-      <DependentUpon>FrmStudents.cs</DependentUpon>
-    </Compile>
     <Compile Include="IPS23_vbohnec21DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IPS23_vbohnec21DataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="models\Aktivnost.cs" />
     <Compile Include="auth\LocalAuthentificationHandler.cs" />
-    <Compile Include="models\Evaluation.cs" />
     <Compile Include="models\staticmodels\IStaticRepositoryItem.cs" />
     <Compile Include="models\Korisnik.cs" />
     <Compile Include="models\Request.cs" />
-    <Compile Include="models\Student.cs" />
-    <Compile Include="models\StudentReportView.cs" />
-    <Compile Include="models\Teacher.cs" />
-    <Compile Include="models\Person.cs" />
     <Compile Include="models\staticmodels\StatusZahtjeva.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="repositories\EvaluationRepository.cs" />
     <Compile Include="models\staticmodels\VrstaZahtjeva.cs" />
     <Compile Include="repositories\ZahtjevRepository.cs" />
     <Compile Include="repositories\KorisnikRepository.cs" />
-    <Compile Include="repositories\TeacherRepository.cs" />
-    <Compile Include="repositories\ActivityRepository.cs" />
-    <Compile Include="repositories\StudentRepository.cs" />
     <Compile Include="repositories\staticrepositories\StaticRepository.cs" />
     <Compile Include="ZahtjevRequestHandler.cs" />
     <EmbeddedResource Include="components\DockableComboBox.resx">
@@ -160,12 +132,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEditRequest.resx">
       <DependentUpon>FrmEditRequest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmEvaluation.resx">
-      <DependentUpon>FrmEvaluation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmFinalReport.resx">
-      <DependentUpon>FrmFinalReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMyRequests.resx">
       <DependentUpon>FrmMyRequests.cs</DependentUpon>
@@ -178,9 +144,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMainContainer.resx">
       <DependentUpon>FrmMainContainer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmStudents.resx">
-      <DependentUpon>FrmStudents.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

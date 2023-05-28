@@ -1,11 +1,7 @@
-﻿using Evaluation_Manager.repositories;
-using Evaluation_Manager.staticrepositories;
+﻿using Kadrovska.repositories;
+using Kadrovska.staticrepositories;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kadrovska.models
 {

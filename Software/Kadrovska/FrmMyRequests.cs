@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Net;
-using System.Threading;
 using System.Windows.Forms;
-using Evaluation_Manager.repositories;
-using Evaluation_Manager.staticrepositories;
+using Kadrovska.repositories;
+using Kadrovska.staticrepositories;
 using Kadrovska.Auth;
 using Kadrovska.models;
 

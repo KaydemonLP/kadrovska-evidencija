@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Evaluation_Manager.Properties
+namespace Kadrovska.Properties
 {
 
 

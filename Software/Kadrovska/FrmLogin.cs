@@ -1,12 +1,10 @@
 ﻿using System;
-using Evaluation_Manager.models;
-using Kadrovska;
 using Kadrovska.Auth;
 using System.Windows.Forms;
-using Evaluation_Manager.repositories;
+using Kadrovska.repositories;
 using System.Drawing;
 
-namespace Evaluation_Manager
+namespace Kadrovska
 {
     public partial class FrmLogin : Form
     {

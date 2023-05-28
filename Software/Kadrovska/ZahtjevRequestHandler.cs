@@ -1,15 +1,10 @@
-﻿using Evaluation_Manager.repositories;
-using Evaluation_Manager.staticrepositories;
+﻿using Kadrovska.repositories;
+using Kadrovska.staticrepositories;
 using Kadrovska.Auth;
 using Kadrovska.models;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Kadrovska
@@ -38,7 +33,7 @@ namespace Kadrovska
 		public static void AddCalendar(MonthCalendar calendar)
 		{
 			m_aCalendars.Add(calendar);
-			calendar.MinDate = DateTime.Now;
+			calendar.MinDate = DateTime.Now.Date;
 		}
 
 		public static void RemoveCalendar(MonthCalendar calendar)
@@ -218,9 +213,9 @@ namespace Kadrovska
 
 		public override void ResetForm()
 		{
-			m_cldStart.SelectionStart = DateTime.Now;
+			m_cldStart.SelectionStart = DateTime.Now.Date;
 			m_cldEnd.MinDate = m_cldStart.SelectionStart;
-			m_cldEnd.SelectionStart = DateTime.Now;
+			m_cldEnd.SelectionStart = DateTime.Now.Date;
 			m_cboType.SelectedIndex = 0;
 			m_lblStart.Text = m_strDefaultDate;
 			m_lblEnd.Text = m_strDefaultDate;

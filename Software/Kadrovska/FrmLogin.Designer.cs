@@ -1,4 +1,4 @@
-﻿namespace Evaluation_Manager
+﻿namespace Kadrovska
 {
     partial class FrmLogin
     {
