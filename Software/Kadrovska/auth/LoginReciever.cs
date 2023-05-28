@@ -29,11 +29,19 @@ namespace Kadrovska.Auth
             Verifikacija uspjesna, smijete zatvoriti ovaj prozor.
           </body>
         </html>";
-
+        /// <summary>
+        /// Konstruktor
+        /// Kada se ova klasa kreira, želimo generirati povratnu vezu
+        /// Za to posluškivamo portove i koristimo prvi otvoreni
+        /// </summary>
         public CLoginReciever()
         {
             RedirectUri = $"http://localhost:{GetRandomUnusedPort()}/authorize/";
         }
+        /// <summary>
+        /// Metoda koja posluškiva portove kroz TCP listener i vraća prvi otvoreni port
+        /// </summary>
+        /// <returns></returns>
         private static int GetRandomUnusedPort()
         {
             var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -47,13 +55,21 @@ namespace Kadrovska.Auth
                 listener.Stop();
             }
         }
-
+        /// <summary>
+        /// Pretvori naš string za HTML stranicu koja se vraća nakon uspješne prijave u bajte
+        /// koji se mogu prenositi korisniku
+        /// </summary>
+        /// <returns></returns>
         private byte[] GetResponseStringAsBytes()
         {
             return Encoding.UTF8.GetBytes(m_strClosePageResponse);
         }
-
-        private void StartListener()
+		/// <summary>
+		/// Pokreće nas prisluškivač odgovora
+		/// Kada nam google vraća odgovor na "RedirectUri" ovaj prisluškivać to detektira
+		/// </summary>
+		/// <exception cref="Exception"></exception>
+		private void StartListener()
         {
             if (m_ResponseListener != null)
                 return;
@@ -71,7 +87,14 @@ namespace Kadrovska.Auth
                 throw new Exception("Nije bilo moguce pokrenut http slusatelj, provjerite privilegije, portove i postavke Firewall-a, i pokusajte ponovo.");
             }
         }
-
+        /// <summary>
+        /// Ova metoda se poziva od strane GoogleAPI-ja kada započinje upit
+        /// Ona započinje prisluškivač i otvara nam browser
+        /// Na kraju započinje Wait metodu i čeka na odgovor
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="taskCancellationToken"></param>
+        /// <returns></returns>
         public async Task<AuthorizationCodeResponseUrl> ReceiveCodeAsync(AuthorizationCodeRequestUrl url,
             CancellationToken taskCancellationToken)
         {
@@ -87,8 +110,14 @@ namespace Kadrovska.Auth
 
             return ret;
         }
-
-        private async Task<AuthorizationCodeResponseUrl> GetResponseFromListener(HttpListener listener, CancellationToken cancelationToken)
+		/// <summary>
+		/// Ova metoda rukova čekanjem na odgovor, slanje povratne stranice te obradom odgovora
+		/// Dretva stoji na listener.GetContextAsync().ConfigureAwait(false) sve dok se korisnik ne prijavi
+		/// </summary>
+		/// <param name="listener"></param>
+		/// <param name="cancelationToken"></param>
+		/// <returns></returns>
+		private async Task<AuthorizationCodeResponseUrl> GetResponseFromListener(HttpListener listener, CancellationToken cancelationToken)
         {
             HttpListenerContext comunicationHandler;
 

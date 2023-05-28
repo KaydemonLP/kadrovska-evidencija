@@ -24,6 +24,14 @@ namespace Kadrovska.Auth
 
         public static string m_strAuthUrlFull = "";
 
+        /// <summary>
+        /// Get scopes nam postavi koje sve podatke ova aplikacija traži
+        /// od google servisa
+        /// openid služi za identifikaciju i autentifikaciju
+        /// profile nam daje mogućnost pregleda korisničkih podatki kao ime i prezime
+        /// email nam omogučava vraćanje email adrese i slanje na istu
+        /// </summary>
+        /// <returns></returns>
         private static String []GetScopes()
         {
             String[] scopes =
@@ -33,7 +41,12 @@ namespace Kadrovska.Auth
 
             return scopes;
         }
-
+        /// <summary>
+        /// Ova metoda vraća kreira "ClientSecrets" za našu aplikaciju
+        /// Ovo omogućava Google Authentification servisima da prepoznaju
+        /// da je ovaj upit poslan od naše aplikacije
+        /// </summary>
+        /// <returns></returns>
         private static ClientSecrets GetClientSecrets() 
         {
             ClientSecrets secrets = new ClientSecrets();
@@ -47,21 +60,34 @@ namespace Kadrovska.Auth
 
             return secrets;
         }
-
+        /// <summary>
+        /// Ova metoda vraća UserCredential, što su trenutačne informacije za sesiju Google Authentifikacije
+        /// </summary>
+        /// <returns></returns>
         public static UserCredential GetLocalCredential()
         {
             return m_Credential;
         }
-
+        /// <summary>
+        /// Ova metoda vrača "Payload" koji smo zatražili od Google-a
+        /// U našem slučaju, on sadržava korisničke podatke kao Ime, Prezime, Email itd
+        /// </summary>
+        /// <returns></returns>
         public static GoogleJsonWebSignature.Payload GetUserInfo()
         {
             return m_UserInfo;
         }
+        /// <summary>
+        ///  Izbriše aktivnu sesiju iz memorije, ako je potrebno
+        /// </summary>
         public static void ClearActiveUserCredential()
         {
             m_Credential = null;
         }
-
+        /// <summary>
+        /// Izbriše sve podatke unutar našeg appdata api foldera
+        /// Koristi se da se na ponovno pokretanje aplikacije ne prijavi sam od sebe
+        /// </summary>
         public static void ClearUserCredentialFiles()
         {
             m_FileDataStore.ClearAsync();
@@ -69,7 +95,14 @@ namespace Kadrovska.Auth
 
         /// <summary>
         /// Započinje process autorizacije u posebnoj dretvi
-        /// Kada je autorizacija završena, obavjesti 
+        /// Kada je autorizacija završena, obavjesti Login formu
+        /// neka otvori ostatak sučelja
+        /// 
+        /// Ako smo već tijekom procesa authentifikacije, jednostavno otvaramo opet web preglednik
+        /// U slučaju da ga je korisnik zatvorio, jer nam nije omogučeno detektiranje toga
+        /// 
+        /// Process će vam otvoriti Web preglednik te ćete se kroz isti prijaviti na bilo koji google račun
+        /// Pošto foi koristi google servise, možete koristiti i vaš FOI račun
         /// </summary>
         public static void StartGoogleAuthentificationProcess()
         {
@@ -98,6 +131,7 @@ namespace Kadrovska.Auth
             {
                 try
                 {
+                    // Zatražimo početak prijave od google api-ja
                     UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync
                         (
                         GetClientSecrets(),

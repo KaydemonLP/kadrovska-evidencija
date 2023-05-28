@@ -21,7 +21,13 @@ namespace Kadrovska
         Color colNavButtonSelected = Color.FromArgb(90, 76, 130);
         Color colNavButtonHover = Color.FromArgb(68, 56, 102);
         Color colNavButtonPress = Color.FromArgb(90, 76, 130);
-
+        /// <summary>
+        /// Konstruktor
+        /// Ova klasa je container ostalih formi, te ona rukova navigacijom između njih
+        /// Ovdje postavljamo koji gumb vodi do koje forme
+        /// Za ovaj prototip su samo implementirane dvije
+        /// Te sve ostale samo otvore skočni prozor
+        /// </summary>
         public FrmMainContainer()
         {
             InitializeComponent();
@@ -57,15 +63,29 @@ namespace Kadrovska
                 btnRecord
             };
         }
-
+        /// <summary>
+        /// Kad se prvo učita, postavi aktivnu stranicu na početnu te je prikaži
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmMainContainer_Load(object sender, EventArgs e)
         {
             //Display the child window
             m_iActiveIndex = 0;
             m_aFormList[m_iActiveIndex].Show();
         }
-
-        private void FrmMainContainer_NavClick(object sender, EventArgs e)
+		/// <summary>
+		/// Ova metoda se zatraži kada se jedna od navigacijskih gumbova klikne
+        /// Provjerimo koji im je tab index unutar Navigacijskog okna
+        /// te postavimo formu koja tome odgovara
+        /// 
+        /// Isto tako promijenimo stil gumba na odgovarajuči, te stari aktivni na normalni stil
+        /// 
+        /// Ako dana forma nije implementirana, vratimo popup koji nas o tome obavijesti
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void FrmMainContainer_NavClick(object sender, EventArgs e)
         {
             int iIndex = ((Button)sender).TabIndex;
             if( m_aFormList[iIndex] == null )

@@ -8,7 +8,12 @@ namespace Kadrovska.repositories
 {
     public static class ZahtjevRepository
     {
-        public static CRequest GetRequest( string authCode )
+		/// <summary>
+		/// Vraća zahtjev kojem odgovara korisniku sa danim autentifikacijskim kodom
+		/// </summary>
+		/// <param name="authCode"></param>
+		/// <returns></returns>
+		public static CRequest GetRequest( string authCode )
         {
             CRequest request = null;
 
@@ -25,7 +30,10 @@ namespace Kadrovska.repositories
             DB.CloseConnection();
             return request;
         } //public static Student GetStudent
-
+        /// <summary>
+        /// Vraća listu SVIH zahtjeva
+        /// </summary>
+        /// <returns></returns>
         public static List<CRequest> GetRequests()
         {
             var requests = new List<CRequest>();
@@ -44,7 +52,11 @@ namespace Kadrovska.repositories
 
             return requests;
         } //public static List
-
+        /// <summary>
+        /// Vraća listu zahtjeva koji odgovaraju korisniku sa danim internim ID-jom
+        /// </summary>
+        /// <param name="iUserID"></param>
+        /// <returns></returns>
 		public static List<CRequest> GetRequests( int iUserID )
 		{
 			var requests = new List<CRequest>();
@@ -64,7 +76,11 @@ namespace Kadrovska.repositories
 
 			return requests;
 		} //public static List
-
+		/// <summary>
+		///  Kreira objekt klase CRequest te u isti učita podatke sa Baze
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		private static CRequest CreateObject(SqlDataReader reader)
         {         
             int iID = int.Parse(reader["ID"].ToString());
@@ -137,7 +153,14 @@ namespace Kadrovska.repositories
 
             return korisnik;
         } //private static Student
-
+        /// <summary>
+        /// Dodaje dani zahtjev u bazu podataka
+        /// Pošto je opis text box sa bilo kojim upitom
+        /// Očisti mu ' kako nebi korisnik mogao napraviti SQL injection
+        /// 
+        /// Osobno bi to napravio pomomču @ parametra ali nam DB dll to ne omogućava
+        /// </summary>
+        /// <param name="request"></param>
         public static void InsertRequest( CRequest request )
         {
             string sql = $"INSERT INTO Zahtjevi (";
@@ -157,7 +180,14 @@ namespace Kadrovska.repositories
             DB.ExecuteCommand(sql);
             DB.CloseConnection();
         }
-
+        /// <summary>
+        /// Ova funkcija nam služi da ažuriramo upit sa danim ID-jem
+        /// Koristi informacije novog CRequest-a
+        ///
+        /// Samo dodaje odgovornu osobu ako je navedena
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="iID"></param>
         public static void UpdateRequest(CRequest request, int iID)
         {
             string sql = $"UPDATE Zahtjevi SET ";
@@ -177,7 +207,10 @@ namespace Kadrovska.repositories
             DB.ExecuteCommand(sql);
             DB.CloseConnection();
         }
-
+        /// <summary>
+        /// Ova metoda uklanja dani zahtjev
+        /// </summary>
+        /// <param name="iID"></param>
 		public static void DeleteRequest(int iID)
 		{
 			string sql = $"DELETE FROM Zahtjevi WHERE ID={iID};";

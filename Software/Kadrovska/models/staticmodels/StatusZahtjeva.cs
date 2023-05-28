@@ -12,6 +12,11 @@ namespace Kadrovska.models
 		{
 			get; set;
 		}
+		/// <summary>
+		/// Implementacija SetWithSQLReader metode
+		/// Učita ID i StatusText sa SQL Tablice
+		/// </summary>
+		/// <param name="reader"></param>
 		public void SetWithSQLReader(SqlDataReader reader)
 		{
 			m_iID = int.Parse(reader["ID"].ToString());

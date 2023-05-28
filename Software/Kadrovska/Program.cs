@@ -15,7 +15,11 @@ namespace Kadrovska
         public static string g_strAppDataFolder = "kadrovska.evidencija";
         public static string g_strAuthFolder = "auth";
 
-        private static void InitialiseStaticRepositories()
+		/// <summary>
+		/// Ova metoda dohvaća podatke od repozitorija koji se ne mijenjaju
+		/// tijekom rada aplikacije
+		/// </summary>
+		private static void InitialiseStaticRepositories()
         {
 			StaticRepositories.VrstaZahtjevaRepository.FetchData();
 			StaticRepositories.StatusZahtjevaRepository.FetchData();
