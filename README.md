@@ -4,7 +4,7 @@
 
 Ime i prezime | E-mail adresa (FOI) | JMBAG | Github korisničko ime
 ------------  | ------------------- | ----- | ---------------------
-Vinko Bohnec | vbohnec21@foi.hr | 0016152943 | VinkoBohnec
+Kay Violeta Bohnec | vbohnec21@foi.hr | 0016152943 | KayVioletaBohnec
 
 
 ## Opis domene
