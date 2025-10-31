@@ -21,9 +21,9 @@ Budući korisnici softverskog rješenja Upravitelj Kadrovskih Zahtjeva očekuju 
 * Ograničavanje pristupa dijelovima sustava ovisno o ulozi korisnika.
 
 ## Zadatak
-PDF dokument sa zadatkom je dostupan u [repositoriju](https://github.com/foivz/pi2023-zadace-VinkoBohnec/blob/19b37c50a3321673abb86b0c5bf982de17d0a27d/Zadatak%20-%20Kadrovska.pdf).
+PDF dokument sa zadatkom je dostupan u [repositoriju](https://github.com/KaydemonLP/kadrovska-evidencija/blob/19b37c50a3321673abb86b0c5bf982de17d0a27d/Zadatak%20-%20Kadrovska.pdf).
 
 ## Resursi
-Dokumentacija ovog zadatka se nalazi na [wiki stranici](https://github.com/foivz/pi2023-zadace-VinkoBohnec/wiki) repozitorija.
+Dokumentacija ovog zadatka se nalazi na [wiki stranici](https://github.com/KaydemonLP/kadrovska-evidencija/wiki) repozitorija.
 
 Svi resursi korišteni u wiki stranici nalaze se u mapi _Documentation_.
